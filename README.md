@@ -61,5 +61,5 @@ Access the Doctrine command line as following
 
 ##Import
 ```sh
-index.php vendor/bin/doctrine-module data-fixture:import
+index.php vendor/bin/doctrine-module data-fixture:import <object_manager> <group>
 ```

@@ -1,6 +1,5 @@
-{
-    "name": "hounddog/doctrine-data-fixture-module",
-    "description": "Zend Framework 2 Module that provides Doctrine Data-Fixture functionality",
+{ "name": "api-skeletons/zf-doctrine-data-fixture",
+    "description": "Doctrine data fixutres with support for mulitple object managers",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -14,6 +13,10 @@
         {
             "name": "Martin Shwalbe",
             "email": "martin.shwalbe@gmail.com"
+        },
+        {
+            "name": "Tom Anderson",
+            "email": "tom.h.anderson@gmail.com"
         }
     ],
     "require": {

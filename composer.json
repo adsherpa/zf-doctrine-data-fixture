@@ -20,7 +20,7 @@
         "php": ">=5.3.3",
         "zendframework/zend-modulemanager": "2.*",
         "zendframework/zend-eventmanager": "2.*",
-        "zendframework/zend-servicemanager": "2.*",
+        "zendframework/zend-servicemanager": "^2.0* || ^3.0",
         "doctrine/data-fixtures": "1.1.*",
         "doctrine/doctrine-orm-module": "~0.7"
     },
@@ -30,8 +30,8 @@
         "squizlabs/php_codesniffer": "1.4.*"   
     },
     "autoload": {
-        "psr-0": {
-            "DoctrineDataFixtureModule": "src/"
+        "psr-4": {
+            "ZF\\Doctrine\\DataFixture\\": "src/"
         }
     }
 }

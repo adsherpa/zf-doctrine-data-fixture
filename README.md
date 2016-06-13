@@ -1,55 +1,65 @@
-# DoctrineDataFixture Module for Zend Framework 2
+ZF Doctrine Data Fixture
+========================
 
-[![Build Status](https://travis-ci.org/Hounddog/DoctrineDataFixtureModule.png)](https://travis-ci.org/Hounddog/DoctrineDataFixtureModule)
-[![Coverage Status](https://coveralls.io/repos/Hounddog/DoctrineDataFixtureModule/badge.png?branch=master)](https://coveralls.io/r/Hounddog/DoctrineDataFixtureModule)
+This provides command line support for Doctrine fixtures to Zend Framework 2.
+Often projects will have multiple sets of fixtures for different databases or modules such as
+from a 3rd party API.  When this is the case a tool which can run fixtures in groups is needed.
+Additionally dependency injection must be available to the fixtures.  To accomplish these needs
+this modules uses a Zend ServiceManager configurable on a per-group per-object manager basis.
 
-## Introduction
 
-The DoctrineDataFixtureModule module intends to integrate Doctrine 2 data-fixture with Zend Framework 2 quickly
-and easily. The following features are intended to work out of the box:
-
-  - Doctrine ORM support
-  - Multiple ORM entity managers
-  - Multiple DBAL connections
-  - Support reuse existing PDO connections in DBAL
-
-## Requirements
-
-This module is designed to work with a typical [ZF2 MVC application](https://github.com/zendframework/ZendSkeletonApplication).
-
-## Installation
+Installation
+------------
 
 Installation of this module uses composer. For composer documentation, please refer to
 [getcomposer.org](http://getcomposer.org/).
 
 ```sh
-$ php composer.phar require hounddog/doctrine-data-fixture-module:0.0.*
+$ composer require api-skeletons/zf-doctrine-data-fixture dev-master
 ```
 
-Then open `config/application.config.php` and add `DoctrineModule`, `DoctrineORMModule` and 
-`DoctrineDataFixtureModule` to your `modules`
 
-#### Registering Fixtures
+Configuration
+--------------
 
-To register fixtures with Doctrine module add the fixtures in your configuration.
+This module builds on top of Doctrine configuration.  The configuration in a module which implements
+fixtures is as such:
 
 ```php
-<?php
-return array(
-      'doctrine' => array(
-            'fixture' => array(
-                  'ModuleName_fixture' => __DIR__ . '/../src/ModuleName/Fixture',
-            )
-      )
-);
+return [
+    'doctrine' => [
+        'fixture' => [
+            'orm_default' => [
+                'group1' => [
+                    'invokables' => [
+                        'ModuleName\Fixture\FixtureOne' => 'ModuleName\Fixture\FixtureOne',
+                    ],
+                    'factories' => [
+                        'ModuleName\Fixture\FixtureTwo' => 'ModuleName\Fixture\FixtureTwoFactory',
+                    ]
+                ],
+                'group2' => [
+                    ...
+                ],
+            ],
+            'orm_zf_doctrine_audit' => [
+                'group3' => [
+                    ...
+                ],
+            ],
+        ],
+    ],
+];
 ```
 
-## Usage
+Each group is a [Zend ServiceManager](http://framework.zend.com/manual/current/en/in-depth-guide/services-and-servicemanager.html)
+configuration.  This allows complete dependency injection control of your fixtures.
+
 
 #### Command Line
 Access the Doctrine command line as following
 
 ##Import
 ```sh
-./vendor/bin/doctrine-module data-fixture:import 
+index.php vendor/bin/doctrine-module data-fixture:import
 ```

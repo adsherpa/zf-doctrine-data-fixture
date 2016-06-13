@@ -12,10 +12,10 @@ return array(
             'routes' => array(
                 'zf-doctrine-data-fixture-import' => array(
                     'options' => array(
-                        'route'    => 'doctrine:data-fixture:import [--group=]',
+                        'route'    => 'data-fixture:import <object-manager> <fixture-group>',
                         'defaults' => array(
                             'controller' => 'ZF\Doctrine\DataFixture\Controller\Import',
-                            'action'     => 'create'
+                            'action'     => 'import'
                         ),
                     ),
                 ),

@@ -1,6 +1,6 @@
 <?php
 
- namespace ZF\Doctrine\DataFixture\Factory;
+ namespace ZF\Doctrine\DataFixture\Controller;
 
  use Zend\ServiceManager\FactoryInterface;
  use Zend\ServiceManager\ServiceLocatorInterface;
@@ -10,15 +10,10 @@ class ImportControllerFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $request = $serviceManager->get('Request');
         $serviceManager = $serviceLocator->getServiceLocator();
 
         $dataFixtureManager = $serviceManager->get('ZF\Doctrine\DataFixture\DataFixtureManager');
-        $objectManagerKey = $request->getParam('objectManager', 'orm_default');
-
-        $instance = new ImportController();
-        $instance->setDataFixtureManager($dataFixtureManager);
-        $instance->setObjectManager($serviceManager->get('doctrine.entitymanager.' . $objectManagerKey));
+        $instance = new ImportController($dataFixtureManager);
 
         return $instance;
     }

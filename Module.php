@@ -24,8 +24,12 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\ModuleManager;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use ZF\Doctrine\DataFixture\Command\ImportCommand;
 use ZF\Doctrine\DataFixture\Service\FixtureFactory;
+use ZF\Doctrine\DataFixture\ServiceManager\ServiceManager as DataFixtureServiceManager;
+use Zend\ServiceManager\ServiceManager;
+use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\Config;
+use Exception;
 
 /**
  * Base module for Doctrine Data Fixture.
@@ -37,7 +41,7 @@ use ZF\Doctrine\DataFixture\Service\FixtureFactory;
  */
 class Module implements
     ConfigProviderInterface,
-    AutoloaderProviderInterface,
+    AutoloaderProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -64,38 +68,31 @@ class Module implements
     /**
      * {@inheritDoc}
      */
-
-    public function init(ModuleManager $moduleManager)
-    {
-        $serviceManager  = $moduleManager->getEvent()->getParam('ServiceManager');
-        $serviceListener = $serviceManager->get('ServiceListener');
-
-        $config = $serviceManager->get('Config');
-        $request = $serviceManager->get('Request');
-
-        $objectManagerKey = $request->getParam('objectManager', 'orm_default');
-        $dataFixtureConfig = $config['doctrine']['fixture'][$objectManagerKey];
-
-        $config['zf-doctrine-data-fixture'] = $dataFixtureConfig;
-
-        $serviceListener->addServiceManager(
-            $serviceListener,
-            'ZF\Doctrine\DataFixture\DataFixtureManager',
-            'zf-doctrine-data-fixture',
-            'Doctrine\Common\DataFixtures\FixtureInterface',
-            'getDoctrineDataFixtureConfig'
-        );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public function getServiceConfig()
     {
         return array(
             'factories' => array(
-                'doctrine.configuration.fixtures' => new FixtureFactory('fixtures_default'),
+                'ZF\Doctrine\DataFixture\DataFixtureManager' => function (ServiceManager $serviceManager)
+                {
+                    $config = $serviceManager->get('Config');
+                    $request = $serviceManager->get('Request');
+
+                    $objectManagerKey = $request->params()->get(1);
+                    $fixtureGroup = $request->params()->get(2);
+
+                    if (! isset($config['doctrine']['fixture'][$objectManagerKey][$fixtureGroup])) {
+                        throw new Exception('Fixture group not found: ' . $objectManagerKey . ' ' . $fixtureGroup);
+                    }
+
+                    $dataFixtureConfig = new Config($config['doctrine']['fixture'][$objectManagerKey][$fixtureGroup]);
+
+                    $dataFixtureServiceManager = new DataFixtureServiceManager($dataFixtureConfig);
+                    $dataFixtureServiceManager->setObjectManager(
+                        $serviceManager->get('doctrine.entitymanager.' . $objectManagerKey)
+                    );
+
+                    return $dataFixtureServiceManager;
+                }
             ),
         );
     }

@@ -17,47 +17,30 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace DoctrineDataFixtureModule\Command;
+namespace ZF\Doctrine\DataFixture\Controller;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Doctrine\ORM\Tools\SchemaTool;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use DoctrineDataFixtureModule\Loader\ServiceLocatorAwareLoader;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Common\Persistence\ObjectManager;
+use ZF\Doctrine\DataFixture\ServiceManager\ServiceManager as DataFixtureServiceManager;
+use Doctrine\Common\DataFixtures\Loader;
 
-/**
- * Command for generate migration classes by comparing your current database schema
- * to your mapping information.
- *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @link    www.doctrine-project.org
- * @since   2.0
- * @author  Jonathan Wage <jonwage@gmail.com>
- */
-class ImportCommand extends Command
+class ImportController extends AbstractActionController
 {
     protected $paths;
 
     protected $em;
-    
-    /**
-     * Service Locator instance
-     * @var Zend\ServiceManager\ServiceLocatorInterface
-     */
-    protected $serviceLocator;
+
 
     const PURGE_MODE_TRUNCATE = 2;
-    
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+
+    public function __construct(DataFixtureServiceManager $dataFixtureManager)
     {
-        $this->serviceLocator = $serviceLocator;
-        parent::__construct();
+        $this->dataFixtureManager = $dataFixtureManager;
     }
 
     protected function configure()
@@ -75,30 +58,21 @@ EOT
             ->addOption('purge-with-truncate', null, InputOption::VALUE_NONE, 'Truncate tables before inserting data');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function importAction()
     {
-        $loader = new ServiceLocatorAwareLoader($this->serviceLocator);
+        $loader = new Loader();
         $purger = new ORMPurger();
 
-        if ($input->getOption('purge-with-truncate')) {
-            $purger->setPurgeMode(self::PURGE_MODE_TRUNCATE);
+        foreach ($this->dataFixtureManager->getAll() as $fixture)
+        {
+            $loader->addFixture($fixture);
         }
 
-        $executor = new ORMExecutor($this->em, $purger);
+#        if ($input->getOption('purge-with-truncate')) {
+#            $purger->setPurgeMode(self::PURGE_MODE_TRUNCATE);
+#        }
 
-        foreach ($this->paths as $key => $value) {
-            $loader->loadFromDirectory($value);
-        }
-        $executor->execute($loader->getFixtures(), $input->getOption('append'));
-    }
-
-    public function setPath($paths)
-    {
-        $this->paths=$paths;
-    }
-
-    public function setEntityManager($em)
-    {
-        $this->em = $em;
+        $executor = new ORMExecutor($this->dataFixtureManager->getObjectManager(), $purger);
+        $executor->execute($loader->getFixtures(), false) ; #$input->getOption('append'));
     }
 }

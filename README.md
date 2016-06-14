@@ -8,7 +8,7 @@ This provides command line support for Doctrine Fixtures in Zend Framework 2.
 Often projects will have multiple sets of fixtures for different databases or modules such as
 from a 3rd party API.  When this is the case a tool which can run fixtures in groups is needed.
 Additionally dependency injection must be available to the fixtures.  To accomplish these needs
-this modules uses a Zend ServiceManager configurable on a per-objectmanager, per-group basis.
+this module uses a Zend Service Manager configurable on a per-Object Manager, per-group basis.
 
 
 Installation

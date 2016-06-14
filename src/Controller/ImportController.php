@@ -21,41 +21,16 @@ namespace ZF\Doctrine\DataFixture\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\Common\Persistence\ObjectManager;
-use ZF\Doctrine\DataFixture\ServiceManager\ServiceManager as DataFixtureServiceManager;
+use ZF\Doctrine\DataFixture\DataFixtureManager;
 use Doctrine\Common\DataFixtures\Loader;
 
 class ImportController extends AbstractActionController
 {
-    protected $paths;
-
-    protected $em;
-
-
-    const PURGE_MODE_TRUNCATE = 2;
-
-    public function __construct(DataFixtureServiceManager $dataFixtureManager)
+    public function __construct(DataFixtureManager $dataFixtureManager)
     {
         $this->dataFixtureManager = $dataFixtureManager;
-    }
-
-    protected function configure()
-    {
-        parent::configure();
-
-        $this->setName('data-fixture:import')
-            ->setDescription('Import Data Fixtures')
-            ->setHelp(
-<<<EOT
-The import command Imports data-fixtures
-EOT
-            )
-            ->addOption('append', null, InputOption::VALUE_NONE, 'Append data to existing data.')
-            ->addOption('purge-with-truncate', null, InputOption::VALUE_NONE, 'Truncate tables before inserting data');
     }
 
     public function importAction()
@@ -63,16 +38,18 @@ EOT
         $loader = new Loader();
         $purger = new ORMPurger();
 
-        foreach ($this->dataFixtureManager->getAll() as $fixture)
-        {
+        foreach ($this->dataFixtureManager->getAll() as $fixture) {
             $loader->addFixture($fixture);
         }
 
-#        if ($input->getOption('purge-with-truncate')) {
-#            $purger->setPurgeMode(self::PURGE_MODE_TRUNCATE);
-#        }
+        if ($this->params()->fromRoute('purge-with-truncate')) {
+            $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
+        }
 
         $executor = new ORMExecutor($this->dataFixtureManager->getObjectManager(), $purger);
-        $executor->execute($loader->getFixtures(), false) ; #$input->getOption('append'));
+        $executor->execute(
+            $loader->getFixtures(),
+            (bool) $this->params()->fromRoute('append')
+        );
     }
 }

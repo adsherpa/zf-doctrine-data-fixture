@@ -1,12 +1,12 @@
 <?php
 
-namespace ZF\Doctrine\DataFixture\ServiceManager;
+namespace ZF\Doctrine\DataFixture;
 
 use Zend\ServiceManager\ServiceManager as ZendServiceManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
 
-class ServiceManager extends ZendServiceManager implements
+class DataFixtureManager extends ZendServiceManager implements
     ObjectManagerAwareInterface
 {
     use ProvidesObjectManager;
@@ -15,8 +15,8 @@ class ServiceManager extends ZendServiceManager implements
     {
         $fixtures = [];
 
-        foreach ($this->canonicalNames as $name) {
-            $fixtures = $this->get($name);
+        foreach ($this->canonicalNames as $name => $squishedname) {
+            $fixtures[] = $this->get($name);
         }
 
         return $fixtures;

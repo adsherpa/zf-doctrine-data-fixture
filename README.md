@@ -21,6 +21,15 @@ Installation of this module uses composer. For composer documentation, please re
 $ composer require api-skeletons/zf-doctrine-data-fixture ^1.0
 ```
 
+Add this module to your application's configuration:
+
+```php
+'modules' => [
+   ...
+   'ZF\\Doctrine\DataFixture',
+],
+```
+
 
 Configuration
 --------------
@@ -69,6 +78,6 @@ index.php data-fixture:import <object-manager> <group> [--purge-with-truncate] [
 
 The `<object-manager>` and `<group>` are required.  The `<object-manager>` is the suffix of the doctrine string identifying the object manager.  This is always `doctrine.entitymanager.<object_manager>` so the default object manager is `orm_default`.  The group is configured per `<object_manager>` and different object managers may have the same group name such as `default`.
 
-`--purge-with-truncate` if specified will purge the object managers tables before running fixtures.
+`--purge-with-truncate` if specified will purge the object manager's tables before running fixtures.
 
 `--append` will append values to the tables.  The author does not believe this option should be used.  When writing fixtures you should validate whether each entity already exists and update it explicitly, or add it if it does not exist.

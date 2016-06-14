@@ -5,7 +5,7 @@ This provides command line support for Doctrine fixtures to Zend Framework 2.
 Often projects will have multiple sets of fixtures for different databases or modules such as
 from a 3rd party API.  When this is the case a tool which can run fixtures in groups is needed.
 Additionally dependency injection must be available to the fixtures.  To accomplish these needs
-this modules uses a Zend ServiceManager configurable on a per-group per-object manager basis.
+this modules uses a Zend ServiceManager configurable on a per-objectmanager, per-group basis.
 
 
 Installation
@@ -22,8 +22,7 @@ $ composer require api-skeletons/zf-doctrine-data-fixture dev-master
 Configuration
 --------------
 
-This module builds on top of Doctrine configuration.  The configuration in a module which implements
-fixtures is as such:
+This module builds on top of Doctrine configuration.  The configuration in a module which implements fixtures is as such:
 
 ```php
 return [
@@ -52,8 +51,7 @@ return [
 ];
 ```
 
-Each group is a [Zend ServiceManager](http://framework.zend.com/manual/current/en/in-depth-guide/services-and-servicemanager.html)
-configuration.  This allows complete dependency injection control of your fixtures.
+Each group is a [Zend ServiceManager](http://framework.zend.com/manual/current/en/in-depth-guide/services-and-servicemanager.html) configuration.  This allows complete dependency injection control of your fixtures.
 
 
 #### Command Line

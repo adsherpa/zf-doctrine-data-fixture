@@ -23,11 +23,11 @@ class DataFixtureManagerFactory implements FactoryInterface
 
         $dataFixtureConfig = new Config($config['doctrine']['fixture'][$objectManagerKey][$fixtureGroup]);
 
-        $dataFixtureServiceManager = new DataFixtureManager($dataFixtureConfig);
-        $dataFixtureServiceManager->setObjectManager(
+        $instance = new DataFixtureManager($dataFixtureConfig);
+        $instance->setObjectManager(
             $serviceLocator->get('doctrine.entitymanager.' . $objectManagerKey)
         );
 
-        return $dataFixtureServiceManager;
+        return $instance;
     }
 }

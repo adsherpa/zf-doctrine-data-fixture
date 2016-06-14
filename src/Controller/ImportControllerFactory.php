@@ -1,10 +1,10 @@
 <?php
 
- namespace ZF\Doctrine\DataFixture\Controller;
+namespace ZF\Doctrine\DataFixture\Controller;
 
- use Zend\ServiceManager\FactoryInterface;
- use Zend\ServiceManager\ServiceLocatorInterface;
- use Zend\ModuleManager\ServiceListener;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ModuleManager\ServiceListener;
 
 class ImportControllerFactory implements FactoryInterface
 {

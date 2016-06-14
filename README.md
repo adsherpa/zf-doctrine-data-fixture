@@ -1,6 +1,9 @@
 ZF Doctrine Data Fixture
 ========================
 
+[![Total Downloads](https://poser.pugx.org/api-skeletons/zf-doctrine-data-fixture/downloads)](https://packagist.org/packages/api-skeletons/zf-doctrine-data-fixture)
+
+
 This provides command line support for Doctrine Fixtures in Zend Framework 2.
 Often projects will have multiple sets of fixtures for different databases or modules such as
 from a 3rd party API.  When this is the case a tool which can run fixtures in groups is needed.

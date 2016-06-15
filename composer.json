@@ -1,5 +1,5 @@
 { "name": "api-skeletons/zf-doctrine-data-fixture",
-    "description": "Doctrine data fixutres with support for mulitple object managers",
+    "description": "Doctrine Data Fixture Console Route with Service Manager configured Fixtures",
     "type": "library",
     "license": "MIT",
     "keywords": [

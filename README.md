@@ -82,3 +82,12 @@ The `<object-manager>` and `<group>` are required.  The `<object-manager>` is th
 `--purge-with-truncate` if specified will purge the object manager's tables before running fixtures.
 
 `--append` will append values to the tables.  The author does not believe this option should be used.  When writing fixtures you should validate whether each entity already exists and update it explicitly, or add it if it does not exist.
+
+
+Important Notes
+---------------
+
+* You can only run one entity manager group at a time.  If you need to run more create a script to run them in sequence.
+* The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManger()`.
+* You cannot use abstract factories.  Each fixture must be individually addressed.
+* You can use instantiators.  I suggest you do.

@@ -27,7 +27,7 @@ Add this module to your application's configuration:
 ```php
 'modules' => [
    ...
-   'ZF\\Doctrine\DataFixture',
+   'ZF\Doctrine\DataFixture',
 ],
 ```
 
@@ -88,6 +88,6 @@ Important Notes
 ---------------
 
 * You can only run one entity manager group at a time.  If you need to run more create a script to run them in sequence.
-* The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManger()`.
-* You cannot use abstract factories.  Each fixture must be individually addressed.
+* The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManager()`.
+* You cannot use abstract factories.  Each fixture must be individually configured.
 * You can use instantiators.  I suggest you do.

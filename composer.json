@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": "~5.6 || ^7.0",
         "zendframework/zend-modulemanager": "2.*",
         "zendframework/zend-eventmanager": "2.*",
         "zendframework/zend-servicemanager": "^2.3",

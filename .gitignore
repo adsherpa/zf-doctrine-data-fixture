@@ -4,3 +4,4 @@
 composer.lock
 composer.phar
 test/coverage
+test/build

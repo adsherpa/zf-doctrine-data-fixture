@@ -1,8 +1,8 @@
 ZF Doctrine Data Fixture
 ========================
 
-[![Build status](https://api.travis-ci.org/API-Skeletons/zf-doctrine-data-fixture.svg)](http://travis-ci.org/api-skeletons/zf-doctrine-data-fixture)
-[![Total Downloads](https://poser.pugx.org/API-Skeletons/zf-doctrine-data-fixture/downloads)](https://packagist.org/packages/api-skeletons/zf-doctrine-data-fixture)
+[![Build status](https://api.travis-ci.org/API-Skeletons/zf-doctrine-data-fixture.svg)](http://travis-ci.org/API-Skeletons/zf-doctrine-data-fixture)
+[![Total Downloads](https://poser.pugx.org/API-Skeletons/zf-doctrine-data-fixture/downloads)](https://packagist.org/packages/API-Skeletons/zf-doctrine-data-fixture)
 
 
 This provides command line support for Doctrine Fixtures in Zend Framework 2.

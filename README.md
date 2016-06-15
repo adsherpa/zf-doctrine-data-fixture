@@ -1,6 +1,7 @@
 ZF Doctrine Data Fixture
 ========================
 
+[![Build status](https://api.travis-ci.org/zfcampus/zf-doctrine-data-fixture.svg)](http://travis-ci.org/zfcampus/zf-doctrine-data-fixture)
 [![Total Downloads](https://poser.pugx.org/api-skeletons/zf-doctrine-data-fixture/downloads)](https://packagist.org/packages/api-skeletons/zf-doctrine-data-fixture)
 
 

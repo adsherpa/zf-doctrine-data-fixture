@@ -81,7 +81,7 @@ The `<object-manager>` and `<group>` are required.  The `<object-manager>` is th
 
 `--purge-with-truncate` if specified will purge the object manager's tables before running fixtures.
 
-`--append` will append values to the tables.  The author does not believe this option should be used.  When writing fixtures you should validate whether each entity already exists and update it explicitly, or add it if it does not exist.
+`--append` will append values to the tables.  If you are re-running fixtures be sure to use this.
 
 
 Important Notes

@@ -11,6 +11,8 @@ return array(
         'factories' => array(
             'ZF\Doctrine\DataFixture\Controller\Import' =>
                 'ZF\Doctrine\DataFixture\Controller\ImportControllerFactory',
+            'ZF\Doctrine\DataFixture\Controller\List' =>
+                'ZF\Doctrine\DataFixture\Controller\ListControllerFactory',
         ),
     ),
     'console' => array(
@@ -22,6 +24,16 @@ return array(
                         'defaults' => array(
                             'controller' => 'ZF\Doctrine\DataFixture\Controller\Import',
                             'action'     => 'import'
+                        ),
+                    ),
+                ),
+
+                'zf-doctrine-data-fixture-list' => array(
+                    'options' => array(
+                        'route'    => 'data-fixture:list [<object-manager>] [<fixture-group>]',
+                        'defaults' => array(
+                            'controller' => 'ZF\Doctrine\DataFixture\Controller\List',
+                            'action'     => 'list'
                         ),
                     ),
                 ),

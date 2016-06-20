@@ -40,6 +40,8 @@ class Module implements
     public function getConsoleUsage(Console $console)
     {
         return array(
+            'data-fixture:list [<object-manager>] [<group>]'
+                => 'List Data Fixtures',
             'data-fixture:import <object-manager> <group> [--append] [--purge-with-truncate]'
                 => 'Import Data Fixtures',
         );

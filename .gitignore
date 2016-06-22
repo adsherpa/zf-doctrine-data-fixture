@@ -1,6 +1,5 @@
 *.DS_Store
-/build
-/vendor
+vendor
 composer.lock
 composer.phar
 test/coverage

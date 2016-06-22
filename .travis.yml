@@ -1,5 +1,3 @@
-sudo: false
-
 language: php
 
 matrix:
@@ -11,12 +9,6 @@ matrix:
         EXECUTE_COVERAGE=true
     - php: 7
     - php: hhvm
-  allow_failures:
-    - php: hhvm
-
-notifications:
-  irc: "irc.freenode.org#apigility-dev"
-  email: false
 
 before_install:
   - if [[ $EXECUTE_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi

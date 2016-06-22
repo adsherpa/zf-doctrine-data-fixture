@@ -77,8 +77,7 @@ Listing Fixtures
 index.php data-fixture:list [<object-manager>] [<group>]
 ```
 
-List all object managers and their groups, list all groups for a given object manager,
-or specify object manager and group to list all fixtures for a group.
+List all object managers and their groups, list all groups for a given object manager, or specify object manager and group to list all fixtures for a group.
 
 
 Executing Fixtures

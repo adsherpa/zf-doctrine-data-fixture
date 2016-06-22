@@ -54,13 +54,14 @@ class ListController extends AbstractActionController
             $this->console->write(
                 $this->params()->fromRoute('object-manager')
                 . " " . $this->params()->fromRoute('fixture-group')
-                . " Fixtures\n", Color::GREEN
+                . " Fixtures\n",
+                Color::GREEN
             );
 
-            foreach($this->dataFixtureManager->getAll() as $fixture) {
+            foreach ($this->dataFixtureManager->getAll() as $fixture) {
                 $this->console->write(get_class($fixture) . "\n", Color::CYAN);
             }
-        } else if ($this->params()->fromRoute('object-manager')) {
+        } elseif ($this->params()->fromRoute('object-manager')) {
             $this->console->write($this->params()->fromRoute('object-manager') . " groups\n", Color::GREEN);
 
             foreach ($this->config[$this->params()->fromRoute('object-manager')] as $group => $smConfig) {

@@ -100,7 +100,7 @@ Important Notes
 * You can only run one entity manager group at a time.  If you need to run more create a script to run them in sequence.
 * The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManager()`.
 * You cannot use abstract factories.  Each fixture must be individually configured.
-* You can use instantiators.  I suggest you do.
+* You can use initializers.  I suggest you do.
 
 
 History

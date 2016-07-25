@@ -9,6 +9,8 @@ return array(
     ),
     'controllers' => array(
         'factories' => array(
+            'ZF\Doctrine\DataFixture\Controller\Help' =>
+                'ZF\Doctrine\DataFixture\Controller\HelpControllerFactory',
             'ZF\Doctrine\DataFixture\Controller\Import' =>
                 'ZF\Doctrine\DataFixture\Controller\ImportControllerFactory',
             'ZF\Doctrine\DataFixture\Controller\List' =>
@@ -18,6 +20,16 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+                'zf-doctrine-data-fixture-help' => array(
+                    'options' => array(
+                        'route'    => 'data-fixture:help',
+                        'defaults' => array(
+                            'controller' => 'ZF\Doctrine\DataFixture\Controller\Help',
+                            'action'     => 'help'
+                        ),
+                    ),
+                ),
+
                 'zf-doctrine-data-fixture-import' => array(
                     'options' => array(
                         'route'    => 'data-fixture:import <object-manager> <fixture-group> [--append] [--purge-with-truncate]',

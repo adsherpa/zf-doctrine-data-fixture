@@ -89,9 +89,21 @@ index.php data-fixture:import <object-manager> <group> [--purge-with-truncate] [
 
 The `<object-manager>` and `<group>` are required.  The `<object-manager>` is the suffix of the doctrine string identifying the object manager.  This is always `doctrine.entitymanager.<object_manager>` so the default object manager is `orm_default`.  The group is configured per `<object_manager>` and different object managers may have the same group name such as `default`.
 
+Options:
+
 `--purge-with-truncate` if specified will purge the object manager's tables before running fixtures.
 
 `--append` will append values to the tables.  If you are re-running fixtures be sure to use this.
+
+*Note the default behavior is to delete all data* managed by the object manager.  If you're running fixtures on an existing database be sure to use `--append`.
+
+
+Getting Help
+------------
+
+```sh
+index.php data-fixture:help
+```
 
 
 Important Notes

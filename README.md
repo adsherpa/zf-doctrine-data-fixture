@@ -11,6 +11,8 @@ from a 3rd party API.  When this is the case a tool which can run fixtures in gr
 Additionally dependency injection must be available to the fixtures.  To accomplish these needs
 this module uses a Zend Service Manager configurable on a per-Object Manager, per-group basis.
 
+[![Watch and learn from the maintainer of this repository](https://raw.githubusercontent.com/API-Skeletons/zf-doctrine-data-fixture/master/media/api-skeletons-play.png)](https://apiskeletons.pivotshare.com/media/zf-doctrine-data-fixture/50624)
+
 
 Installation
 ------------

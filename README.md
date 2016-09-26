@@ -9,9 +9,7 @@ This provides command line support for Doctrine Fixtures in Zend Framework 2.
 Often projects will have multiple sets of fixtures for different object managers or modules such as
 from a 3rd party API.  When this is the case a tool which can run fixtures in groups is needed.
 Additionally dependency injection must be available to the fixtures.  To accomplish these needs
-this module uses a Zend Service Manager configurable on a per-Object Manager, per-group basis.
-
-[![Watch and learn from the maintainer of this repository](https://raw.githubusercontent.com/API-Skeletons/zf-doctrine-data-fixture/master/media/api-skeletons-play.png)](https://apiskeletons.pivotshare.com/media/zf-doctrine-data-fixture/50624)
+this module uses a Zend Service Manager configurable on a per-group basis.
 
 
 Installation
@@ -21,7 +19,7 @@ Installation of this module uses composer. For composer documentation, please re
 [getcomposer.org](http://getcomposer.org/).
 
 ```sh
-$ composer require api-skeletons/zf-doctrine-data-fixture ^1.0
+$ composer require api-skeletons/zf-doctrine-data-fixture ^2.0
 ```
 
 Add this module to your application's configuration:
@@ -43,26 +41,18 @@ This module builds on top of Doctrine configuration.  The configuration in a mod
 return [
     'doctrine' => [
         'fixture' => [
-            'orm_default' => [
-                'group1' => [
-                    'invokables' => [
-                        'ModuleName\Fixture\FixtureOne' => 'ModuleName\Fixture\FixtureOne',
-                    ],
-                    'factories' => [
-                        'ModuleName\Fixture\FixtureTwo' => 'ModuleName\Fixture\FixtureTwoFactory',
-                    ]
+            'object_manager' => 'doctrine.entitymanager.orm_default',
+            'group1' => [
+                'invokables' => [
+                    'ModuleName\Fixture\FixtureOne' => 'ModuleName\Fixture\FixtureOne',
                 ],
-                'group2' => [
-                    ...
-                ],
-            ],
-            'orm_zf_doctrine_audit' => [
-                'group1' => [
-                    ...
-                ],
-                'group3' => [
-                    ...
+                'factories' => [
+                    'ModuleName\Fixture\FixtureTwo' => 'ModuleName\Fixture\FixtureTwoFactory',
                 ]
+            ],
+            'group2' => [
+                'object_manager' => 'doctrine.entitymanager.orm_zf_doctrine_audit',
+                ...
             ],
         ],
     ],
@@ -76,7 +66,7 @@ Listing Fixtures
 ----------------
 
 ```sh
-index.php data-fixture:list [<object-manager>] [<group>]
+index.php data-fixture:list [<group>]
 ```
 
 List all object managers and their groups, list all groups for a given object manager, or specify object manager and group to list all fixtures for a group.
@@ -86,10 +76,10 @@ Executing Fixtures
 ------------------
 
 ```sh
-index.php data-fixture:import <object-manager> <group> [--purge-with-truncate] [--append]
+index.php data-fixture:import <group> [--purge-with-truncate] [--append]
 ```
 
-The `<object-manager>` and `<group>` are required.  The `<object-manager>` is the suffix of the doctrine string identifying the object manager.  This is always `doctrine.entitymanager.<object_manager>` so the default object manager is `orm_default`.  The group is configured per `<object_manager>` and different object managers may have the same group name such as `default`.
+The `<group>` is required.
 
 Options:
 
@@ -111,13 +101,15 @@ index.php data-fixture:help
 Important Notes
 ---------------
 
-* You can only run one entity manager group at a time.  If you need to run more create a script to run them in sequence.
+* You can only run one group at a time.  If you need to run more create a script to run them in sequence.
 * The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManager()`.
 * You cannot use abstract factories.  Each fixture must be individually configured.
 * You can use initializers.  I suggest you do.
-* Do not use constructor (dependency) injection.  The Doctrine fixture `Loader` creates fixtures even if they are already loaded in the fixture manager so any fixtures created via factory cannot use constructor injection.
+* Do not use constructor (dependency) injection.  The Doctrine fixture `Loader` creates fixtures even if they are already loaded in the fixture manager so any fixtures created via factory cannot use constructor injection.  The author also feels this is a poor practice.
 
 History
 -------
+
+Version 1.0 of this module grouped groups by partial object manager alias.  This limited grouping of 3rd party fixtures and the flexibility of using ODM.
 
 This module is a near complete rewrite of [hounddog/doctrine-data-fixture-module](https://github.com/Hounddog/DoctrineDataFixtureModule).  All the patterns have changed and the code was reduced.  That module served me and the community well for a long time.

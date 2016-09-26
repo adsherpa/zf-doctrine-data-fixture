@@ -34,33 +34,19 @@ class ListController extends AbstractActionController
         }
 
         if ($this->dataFixtureManager) {
-            $this->console->write('Object Manager: ', Color::YELLOW);
-            $this->console->write($this->params()->fromRoute('object-manager') . "\n", Color::GREEN);
             $this->console->write('Group: ', Color::YELLOW);
             $this->console->write($this->params()->fromRoute('fixture-group') . "\n", Color::GREEN);
+            $this->console->write('Object Manager: ', Color::YELLOW);
+            $this->console->write($this->dataFixtureManager->getObjectManagerAlias() . "\n", Color::GREEN);
 
             foreach ($this->dataFixtureManager->getAll() as $fixture) {
                 $this->console->write(get_class($fixture) . "\n", Color::CYAN);
             }
-        } elseif ($this->params()->fromRoute('object-manager')) {
-            $this->console->write("All Groups\n", Color::RED);
-            $this->console->write('Object Manager: ', Color::YELLOW);
-            $this->console->write($this->params()->fromRoute('object-manager') . "\n", Color::GREEN);
-
-            foreach ($this->config[$this->params()->fromRoute('object-manager')] as $group => $smConfig) {
-                $this->console->write("$group\n", Color::CYAN);
-            }
         } else {
-            $this->console->write("All Object Managers and Groups\n", Color::RED);
+            $this->console->write("All Fixture Groups\n", Color::RED);
 
-            foreach ($this->config as $objectManagerAlias => $groupConfig) {
-                $this->console->write('Object Manager: ', Color::YELLOW);
-
-                $this->console->write("$objectManagerAlias\n", Color::GREEN);
-
-                foreach ($groupConfig as $group => $smConfig) {
-                    $this->console->write("$group\n", Color::CYAN);
-                }
+            foreach ($this->config as $group => $smConfig) {
+                $this->console->write("$group\n", Color::CYAN);
             }
         }
     }

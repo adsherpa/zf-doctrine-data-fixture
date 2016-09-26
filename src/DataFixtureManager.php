@@ -13,6 +13,7 @@ class DataFixtureManager extends ZendServiceManager implements
     use ProvidesObjectManager;
 
     protected $serviceLocator;
+    protected $objectManagerAlias;
 
     public function getAll()
     {
@@ -23,6 +24,18 @@ class DataFixtureManager extends ZendServiceManager implements
         }
 
         return $fixtures;
+    }
+
+    public function setObjectManagerAlias($alias)
+    {
+        $this->objectManagerAlias = $alias;
+
+        return $this;
+    }
+
+    public function getObjectManagerAlias()
+    {
+        return $this->objectManagerAlias;
     }
 
     public function getServiceLocator()

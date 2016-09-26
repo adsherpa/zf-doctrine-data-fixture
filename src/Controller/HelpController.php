@@ -31,7 +31,7 @@ class HelpController extends AbstractActionController
 
         $help = <<<EOF
 Usage:
-    data-fixture:import object_manager_alias group_name
+    data-fixture:import group_name
 
 Options:
     --purge-with-truncate

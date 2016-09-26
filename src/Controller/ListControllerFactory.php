@@ -19,7 +19,7 @@ class ListControllerFactory implements FactoryInterface
         $console = $serviceManager->get('Console');
 
         // If an object manager and group are specified include the data fixture manager
-        if ($request->params()->get(1) && $request->params()->get(2)) {
+        if ($request->params()->get(1)) {
             $dataFixtureManager = $serviceManager->get('ZF\Doctrine\DataFixture\DataFixtureManager');
         }
 

@@ -13,16 +13,15 @@ return array(
             ),
         ),
         'fixture' => array(
-            'orm_default' => array(
-                'test' => array(
-                    'invokables' => array(
-                        'Db\Fixture\OneFixture' =>
-                            'Db\Fixture\OneFixture',
-                    ),
-                    'factories' => array(
-                        'Db\Fixture\TwoFixture' =>
-                            'Db\Fixture\TwoFixtureFactory',
-                    ),
+            'test' => array(
+                'object_manager' => 'doctrine.entitymanager.orm_default',
+                'invokables' => array(
+                    'Db\Fixture\OneFixture' =>
+                        'Db\Fixture\OneFixture',
+                ),
+                'factories' => array(
+                    'Db\Fixture\TwoFixture' =>
+                        'Db\Fixture\TwoFixtureFactory',
                 ),
             ),
         ),

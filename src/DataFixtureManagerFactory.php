@@ -14,21 +14,24 @@ class DataFixtureManagerFactory implements FactoryInterface
         $config = $serviceLocator->get('Config');
         $request = $serviceLocator->get('Request');
 
-        $objectManagerKey = $request->params()->get(1);
-        $fixtureGroup = $request->params()->get(2);
+        $fixtureGroup = $request->params()->get(1);
 
-        if (! isset($config['doctrine']['fixture'][$objectManagerKey][$fixtureGroup])) {
-            throw new Exception('Fixture group not found: ' . $objectManagerKey . ' ' . $fixtureGroup);
+        if (! isset($config['doctrine']['fixture'][$fixtureGroup])) {
+            throw new Exception('Fixture group not found: ' . $fixtureGroup);
         }
 
-        $dataFixtureConfig = new Config($config['doctrine']['fixture'][$objectManagerKey][$fixtureGroup]);
+        if (! isset($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])) {
+            throw new Exception('Object manager not specified for fixture group ' . $fixtureGroup);
+        }
+
+        $dataFixtureConfig = new Config($config['doctrine']['fixture'][$fixtureGroup]);
+        $objectManager = $serviceLocator->get($config['doctrine']['fixture'][$fixtureGroup]['object_manager']);
 
         $instance = new DataFixtureManager($dataFixtureConfig);
         $instance
             ->setServiceLocator($serviceLocator)
-            ->setObjectManager(
-                $serviceLocator->get('doctrine.entitymanager.' . $objectManagerKey)
-            )
+            ->setObjectManagerAlias($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])
+            ->setObjectManager($objectManager)
             ;
 
         return $instance;

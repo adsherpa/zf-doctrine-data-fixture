@@ -32,6 +32,6 @@ class DataFixtureTest extends AbstractConsoleControllerTestCase
 
     public function testField()
     {
-        $this->dispatch('data-fixture:import orm_default test');
+        $this->dispatch('data-fixture:import test');
     }
 }

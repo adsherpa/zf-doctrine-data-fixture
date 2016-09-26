@@ -41,8 +41,8 @@ This module builds on top of Doctrine configuration.  The configuration in a mod
 return [
     'doctrine' => [
         'fixture' => [
-            'object_manager' => 'doctrine.entitymanager.orm_default',
             'group1' => [
+                'object_manager' => 'doctrine.entitymanager.orm_default',
                 'invokables' => [
                     'ModuleName\Fixture\FixtureOne' => 'ModuleName\Fixture\FixtureOne',
                 ],

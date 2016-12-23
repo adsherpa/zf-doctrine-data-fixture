@@ -9,7 +9,7 @@ class TwoFixtureFactory
     public function __invoke(
         ContainerInterface $container,
         $requestedName,
-        array $options = NULL
+        array $options = null
     ) {
         return new TwoFixture();
     }

@@ -9,7 +9,7 @@ class ImportControllerFactory
     public function __invoke(
         ContainerInterface $container,
         $requestedName,
-        array $options = NULL
+        array $options = null
     ) {
         $dataFixtureManager = $container->get('ZF\Doctrine\DataFixture\DataFixtureManager');
         $instance = new ImportController($dataFixtureManager);

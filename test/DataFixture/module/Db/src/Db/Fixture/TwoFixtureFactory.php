@@ -2,14 +2,15 @@
 
 namespace Db\Fixture;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
 
-class TwoFixtureFactory implements
-    FactoryInterface
+class TwoFixtureFactory
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        $requestedName,
+        array $options = NULL
+    ) {
         return new TwoFixture();
     }
 }

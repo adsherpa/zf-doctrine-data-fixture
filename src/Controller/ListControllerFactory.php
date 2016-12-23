@@ -13,15 +13,13 @@ class ListControllerFactory // implements FactoryInterface
     ) {
         $dataFixtureManager = null;
 
-        $serviceManager = $container->getServiceLocator() ?: $container;
-
-        $request = $serviceManager->get('Request');
-        $config = $serviceManager->get('Config');
-        $console = $serviceManager->get('Console');
+        $request = $container->get('Request');
+        $config = $container->get('Config');
+        $console = $container->get('Console');
 
         // If an object manager and group are specified include the data fixture manager
         if ($request->params()->get(1)) {
-            $dataFixtureManager = $serviceManager->get('ZF\Doctrine\DataFixture\DataFixtureManager');
+            $dataFixtureManager = $container->get('ZF\Doctrine\DataFixture\DataFixtureManager');
         }
 
         $instance = new ListController((array) $config['doctrine']['fixture'], $console, $dataFixtureManager);

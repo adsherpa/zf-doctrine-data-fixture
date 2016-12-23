@@ -5,6 +5,7 @@ namespace ZF\Doctrine\DataFixture\Controller;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ModuleManager\ServiceListener;
+use Interop\Container\ContainerInterface;
 
 class ListControllerFactory implements FactoryInterface
 {
@@ -26,5 +27,13 @@ class ListControllerFactory implements FactoryInterface
         $instance = new ListController($config['doctrine']['fixture'], $console, $dataFixtureManager);
 
         return $instance;
+    }
+
+    public function __invoke(
+        ContainerInterface $container,
+        $requestedName,
+        array $options = NULL
+    ) {
+        return $this->createService($container);
     }
 }

@@ -2,6 +2,17 @@
 
 return array(
     'modules' => array(
+        'Zend\\Cache',
+        'Zend\\Form',
+        'Zend\\I18n',
+        'Zend\\Db',
+        'Zend\\Filter',
+        'Zend\\Hydrator',
+        'Zend\\InputFilter',
+        'Zend\\Paginator',
+        'Zend\\Router',
+        'Zend\\Validator',
+        'Zend\Mvc\Console',
         'DoctrineModule',
         'DoctrineORMModule',
         'Db',

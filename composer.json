@@ -21,16 +21,16 @@
     ],
     "require": {
         "php": "~5.6 || ^7.0",
-        "zendframework/zend-modulemanager": "2.*",
-        "zendframework/zend-eventmanager": "2.*",
-        "zendframework/zend-servicemanager": "^2.3",
+        "zendframework/zend-modulemanager": "*",
+        "zendframework/zend-eventmanager": "*",
+        "zendframework/zend-servicemanager": "*",
         "doctrine/data-fixtures": "1.1.*"
     },
     "require-dev": {
         "phpunit/phpunit" : "^5.4",
         "squizlabs/php_codesniffer": "*",
-        "doctrine/doctrine-orm-module": "^0.10.0",
-        "zendframework/zendframework": "^2.5"   
+        "doctrine/doctrine-orm-module": "^0.10 || ^1.0",
+        "zendframework/zendframework": "^3.0"   
     },
     "autoload": {
         "psr-4": {

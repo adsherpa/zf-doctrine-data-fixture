@@ -27,8 +27,8 @@ class HelpController extends AbstractActionController
     {
         if (! $this->getRequest() instanceof ConsoleRequest) {
             throw new RuntimeException('You can only use this action from a console.');
-        }
 
+        }
         $help = <<<EOF
 Usage:
     data-fixture:import group_name
@@ -42,6 +42,7 @@ Options:
         Will append values to the tables.  If you are re-running fixtures be
         sure to use this.  If you do not specify this option the object
         manager's tables will be emptied!
+
 EOF;
 
         $this->console->write($help);

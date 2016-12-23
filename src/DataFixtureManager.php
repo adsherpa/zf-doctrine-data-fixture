@@ -3,9 +3,9 @@
 namespace ZF\Doctrine\DataFixture;
 
 use Zend\ServiceManager\ServiceManager as ZendServiceManager;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
+use Interop\Container\ContainerInterface;
 
 class DataFixtureManager extends ZendServiceManager implements
     ObjectManagerAwareInterface
@@ -19,7 +19,7 @@ class DataFixtureManager extends ZendServiceManager implements
     {
         $fixtures = [];
 
-        foreach ($this->canonicalNames as $name => $squishedname) {
+        foreach ((array) $this->factories as $name => $squishedname) {
             $fixtures[] = $this->get($name);
         }
 
@@ -43,7 +43,7 @@ class DataFixtureManager extends ZendServiceManager implements
         return $this->serviceLocator;
     }
 
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ContainerInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
 

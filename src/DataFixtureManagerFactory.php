@@ -2,17 +2,19 @@
 
 namespace ZF\Doctrine\DataFixture;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Config;
 use Exception;
 
-class DataFixtureManagerFactory implements FactoryInterface
+class DataFixtureManagerFactory// implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $config = $serviceLocator->get('Config');
-        $request = $serviceLocator->get('Request');
+    public function __invoke(
+        ContainerInterface $container,
+        $requestedName,
+        array $options = NULL
+    ) {
+        $config = $container->get('Config');
+        $request = $container->get('Request');
 
         $fixtureGroup = $request->params()->get(1);
 
@@ -24,12 +26,11 @@ class DataFixtureManagerFactory implements FactoryInterface
             throw new Exception('Object manager not specified for fixture group ' . $fixtureGroup);
         }
 
-        $dataFixtureConfig = new Config($config['doctrine']['fixture'][$fixtureGroup]);
-        $objectManager = $serviceLocator->get($config['doctrine']['fixture'][$fixtureGroup]['object_manager']);
+        $objectManager = $container->get($config['doctrine']['fixture'][$fixtureGroup]['object_manager']);
 
-        $instance = new DataFixtureManager($dataFixtureConfig);
+        $instance = new DataFixtureManager((array) $config['doctrine']['fixture'][$fixtureGroup]);
         $instance
-            ->setServiceLocator($serviceLocator)
+            ->setServiceLocator($container)
             ->setObjectManagerAlias($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])
             ->setObjectManager($objectManager)
             ;

@@ -16,7 +16,11 @@ class DataFixtureManagerFactory// implements FactoryInterface
         $config = $container->get('Config');
         $request = $container->get('Request');
 
-        $fixtureGroup = $request->params()->get(1);
+        if (isset($options['group'])) {
+            $fixtureGroup = $options['group'];
+        } else {
+            $fixtureGroup = $request->params()->get(1);
+        }
 
         if (! isset($config['doctrine']['fixture'][$fixtureGroup])) {
             throw new Exception('Fixture group not found: ' . $fixtureGroup);

@@ -32,7 +32,7 @@ return array(
 
                 'zf-doctrine-data-fixture-import' => array(
                     'options' => array(
-                        'route'    => 'data-fixture:import <fixture-group> [--append] [--purge-with-truncate]',
+                        'route'    => 'data-fixture:import <fixture-group> [--append] [--do-not-append] [--purge-with-truncate]',
                         'defaults' => array(
                             'controller' => 'ZF\Doctrine\DataFixture\Controller\Import',
                             'action'     => 'import'

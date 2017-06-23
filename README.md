@@ -76,19 +76,22 @@ Executing Fixtures
 ------------------
 
 ```sh
-index.php data-fixture:import <group> [--purge-with-truncate] [--append]
+index.php data-fixture:import <group> [--purge-with-truncate] [--do-not-append]
 ```
 
 The `<group>` is required.
+
+The default was to not append and this was constantly overridden with --append.
+Append is now to the default option.  This is inversed with the new --do-not-append
 
 Options:
 
 `--purge-with-truncate` if specified will purge the object manager's tables before running fixtures.
 
-`--append` will append values to the tables.  If you are re-running fixtures be sure to use this.
+`--do-not-append` will delete all data in the database before running fixtures.
 
-*Note the default behavior is to delete all data* managed by the object manager.  If you're running fixtures on an existing database be sure to use `--append`.
-
+~~`--append` **deprecated** will append values to the tables.  If you are re-running fixtures be sure to use this.~~
+~~*Note the default behavior is to delete all data* managed by the object manager.  If you're running fixtures on an existing database be sure to use `--append`.~~
 
 Getting Help
 ------------

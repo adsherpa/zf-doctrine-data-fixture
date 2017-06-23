@@ -24,6 +24,10 @@ class ImportController extends AbstractActionController
             throw new RuntimeException('You can only use this action from a console.');
         }
 
+        if ($this->params()->fromRoute('append')) {
+            throw new RuntimeException('--append is now the default action');
+        }
+
         $loader = new Loader();
         $purger = new ORMPurger();
 
@@ -38,7 +42,7 @@ class ImportController extends AbstractActionController
         $executor = new ORMExecutor($this->dataFixtureManager->getObjectManager(), $purger);
         $executor->execute(
             $loader->getFixtures(),
-            (bool) $this->params()->fromRoute('append')
+            (bool) ! $this->params()->fromRoute('do-not-append')
         );
     }
 }

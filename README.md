@@ -90,9 +90,6 @@ Options:
 
 `--do-not-append` will delete all data in the database before running fixtures.
 
-~~`--append` **deprecated** will append values to the tables.  If you are re-running fixtures be sure to use this.~~
-~~*Note the default behavior is to delete all data* managed by the object manager.  If you're running fixtures on an existing database be sure to use `--append`.~~
-
 
 Executing Fixtures from Code
 ----------------------------
@@ -132,11 +129,10 @@ index.php data-fixture:help
 Important Notes
 ---------------
 
-* You can only run one group at a time.  If you need to run more create a script to run them in sequence.
+* You can only run one group at a time from the command line.  If you need to run more create a script to run them in sequence.
 * The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManager()`.
 * You cannot use abstract factories.  Each fixture must be individually configured.
-* You can use initializers.  I suggest you do.
-* Do not use constructor (dependency) injection.  The Doctrine fixture `Loader` creates fixtures even if they are already loaded in the fixture manager so any fixtures created via factory cannot use constructor injection.  The author also feels this is a poor practice.
+* Do not use constructor (dependency) injection.  The Doctrine fixture `Loader` creates fixtures even if they are already loaded in the fixture manager so any fixtures created via factory cannot use constructor injection.
 
 History
 -------

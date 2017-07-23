@@ -72,7 +72,7 @@ index.php data-fixture:list [<group>]
 List all object managers and their groups, list all groups for a given object manager, or specify object manager and group to list all fixtures for a group.
 
 
-Executing Fixtures
+Executing Fixtures from Command Line
 ------------------
 
 ```sh
@@ -92,6 +92,34 @@ Options:
 
 ~~`--append` **deprecated** will append values to the tables.  If you are re-running fixtures be sure to use this.~~
 ~~*Note the default behavior is to delete all data* managed by the object manager.  If you're running fixtures on an existing database be sure to use `--append`.~~
+
+
+Executing Fixtures from Code
+----------------------------
+
+For unit testing or other times you must run your fixtures from within code
+you must fetch the `DataFixtureManager` with `build` and pass the group name
+to the service manager then load the fixtures into the `Loader` manually.
+
+```php
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Loader;
+
+// Run audit fixtures
+$dataFixtureManager = $application->getServiceManager()
+    ->build('ZF\Doctrine\DataFixture\DataFixtureManager', ['group' => 'zf-doctrine-audit']);
+
+$loader = new Loader();
+$purger = new ORMPurger();
+$executor = new ORMExecutor($auditEntityManager, $purger);
+
+foreach ($dataFixtureManager->getAll() as $fixture) {
+    $loader->addFixture($fixture);
+}
+
+$executor->execute($loader->getFixtures(), true);
+```
 
 Getting Help
 ------------

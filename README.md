@@ -12,6 +12,14 @@ Additionally dependency injection must be available to the fixtures.  To accompl
 this module uses a Zend Service Manager configurable on a per-group basis.
 
 
+Releases
+--------
+
+The 4.x release tags support PHP 5.6 and 7.0.
+
+The 5.x release tags support PHP 7.1 and above.
+
+
 Installation
 ------------
 

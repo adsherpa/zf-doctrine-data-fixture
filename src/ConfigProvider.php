@@ -71,7 +71,8 @@ class ConfigProvider
 
                 'zf-doctrine-data-fixture-import' => [
                     'options' => [
-                        'route'    => 'data-fixture:import <fixture-group> [--append] [--do-not-append] [--purge-with-truncate]',
+                        'route'    => 'data-fixture:import '
+                            . '<fixture-group> [--append] [--do-not-append] [--purge-with-truncate]',
                         'defaults' => [
                             'controller' => Controller\ImportController::class,
                             'action'     => 'import'

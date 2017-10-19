@@ -62,7 +62,7 @@ class Module implements
             'service_manager' => $configProvider->getDependencies(),
             'controllers' => $configProvider->getControllerDependencyConfig(),
             'console' => [
-                'route' => $configProvider->getConsoleRouterConfig(),
+                'router' => $configProvider->getConsoleRouterConfig(),
             ],
         ];
     }

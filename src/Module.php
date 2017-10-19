@@ -23,6 +23,7 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\Console\Adapter\AdapterInterface as Console;
+use Zend\Loader\StandardAutoloader;
 
 /**
  * ZF2 Doctrine Data Fixture Module
@@ -30,6 +31,7 @@ use Zend\Console\Adapter\AdapterInterface as Console;
  * @license MIT
  * @link    www.doctrine-project.org
  * @author  Martin Shwalbe <martin.shwalbe@gmail.com>
+ * @link    apiskeletons.com
  * @author  Tom Anderson <tom.h.anderson@gmail.com>
  */
 class Module implements
@@ -39,12 +41,14 @@ class Module implements
 {
     public function getConsoleUsage(Console $console)
     {
-        return array(
+        return [
+            'data-fixture:help'
+                => 'Data Fixtures Help',
             'data-fixture:list [<group>]'
                 => 'List Data Fixtures',
             'data-fixture:import <group> [--append] [--purge-with-truncate]'
                 => 'Import Data Fixtures',
-        );
+        ];
     }
 
     /**
@@ -52,7 +56,15 @@ class Module implements
      */
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        $configProvider = new ConfigProvider();
+
+        return [
+            'service_manager' => $configProvider->getDependencies(),
+            'controllers' => $configProvider->getControllerDependencyConfig(),
+            'console' => [
+                'route' => $configProvider->getConsoleRouterConfig(),
+            ],
+        ];
     }
 
     /**
@@ -60,12 +72,12 @@ class Module implements
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/',
-                ),
-            ),
-        );
+        return [
+            StandardAutoloader::class => [
+                'namespaces' => [
+                    __NAMESPACE__ => __DIR__,
+                ],
+            ],
+        ];
     }
 }

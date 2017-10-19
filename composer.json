@@ -35,9 +35,6 @@
     "autoload": {
         "psr-4": {
             "ZF\\Doctrine\\DataFixture\\": "src/"
-        },
-        "classmap": [
-          "Module.php"
-        ]
+        }
     }
 }

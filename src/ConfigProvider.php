@@ -27,7 +27,7 @@ class ConfigProvider
             'dependencies' => $this->getDependencies(),
             'controllers' => $this->getControllerDependencyConfig(),
             'console' => [
-                'route' => $this->getConsoleRouterConfig(),
+                'router' => $this->getConsoleRouterConfig(),
             ],
         ];
     }

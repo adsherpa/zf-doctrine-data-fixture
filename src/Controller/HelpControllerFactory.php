@@ -11,6 +11,9 @@ class HelpControllerFactory
         $requestedName,
         array $options = null
     ) {
-        return new HelpController($container->get('Console'));
+        $instance = new HelpController()
+        $instance->setConsole($container->get('Console'));
+
+        return $instance;
     }
 }

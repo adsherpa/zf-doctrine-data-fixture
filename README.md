@@ -39,6 +39,11 @@ Add this module to your application's configuration:
 ],
 ```
 
+> ### zf-component-installer
+>
+> If you use [zf-component-installer](https://github.com/zendframework/zf-component-installer),
+> that plugin will install zf-doctrine-data-fixture as a module for you.
+
 
 Configuration
 --------------

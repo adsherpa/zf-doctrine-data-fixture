@@ -2,11 +2,11 @@
 
 namespace ZF\Doctrine\DataFixture;
 
+use RuntimeException;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Config;
-use Exception;
 
-class DataFixtureManagerFactory// implements FactoryInterface
+class DataFixtureManagerFactory
 {
     public function __invoke(
         ContainerInterface $container,
@@ -23,11 +23,11 @@ class DataFixtureManagerFactory// implements FactoryInterface
         }
 
         if (! isset($config['doctrine']['fixture'][$fixtureGroup])) {
-            throw new Exception('Fixture group not found: ' . $fixtureGroup);
+            throw new RuntimeException('Fixture group not found: ' . $fixtureGroup);
         }
 
         if (! isset($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])) {
-            throw new Exception('Object manager not specified for fixture group ' . $fixtureGroup);
+            throw new RuntimeException('Object manager not specified for fixture group ' . $fixtureGroup);
         }
 
         $objectManager = $container->get($config['doctrine']['fixture'][$fixtureGroup]['object_manager']);

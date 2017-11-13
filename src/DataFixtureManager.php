@@ -2,10 +2,10 @@
 
 namespace ZF\Doctrine\DataFixture;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceManager as ZendServiceManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
-use Interop\Container\ContainerInterface;
 
 class DataFixtureManager extends ZendServiceManager implements
     ObjectManagerAwareInterface

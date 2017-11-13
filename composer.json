@@ -1,12 +1,11 @@
-{ "name": "api-skeletons/zf-doctrine-data-fixture",
+{
+    "name": "api-skeletons/zf-doctrine-data-fixture",
     "description": "Doctrine Data Fixture Console Route with Service Manager configured Fixtures",
     "type": "library",
     "license": "MIT",
     "keywords": [
         "doctrine",
-        "data-fixture",
-        "module",
-        "zf2"
+        "data-fixture"
     ],
     "homepage": "http://www.doctrine-project.org/",
     "authors": [
@@ -24,6 +23,7 @@
         "zendframework/zend-modulemanager": "^2.7 || ^3.0",
         "zendframework/zend-eventmanager": "^3.0",
         "zendframework/zend-servicemanager": "^3.0",
+        "zendframework/zend-mvc-console": "1.1.*",
         "doctrine/data-fixtures": "1.1.*"
     },
     "require-dev": {
@@ -35,6 +35,12 @@
     "autoload": {
         "psr-4": {
             "ZF\\Doctrine\\DataFixture\\": "src/"
+        }
+    },
+    "extra": {
+        "zf": {
+            "component": "ZF\\Doctrine\\DataFixture",
+            "config-provider": "ZF\\Doctrine\\DataFixture\\ConfigProvider"
         }
     }
 }

@@ -2,16 +2,13 @@
 
 namespace ZF\Doctrine\DataFixture\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Zend\Mvc\Console\Controller\AbstractConsoleController;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use ZF\Doctrine\DataFixture\DataFixtureManager;
 use Doctrine\Common\DataFixtures\Loader;
-use Zend\Console\Request as ConsoleRequest;
-use RuntimeException;
 
-class ImportController extends AbstractActionController
+class ImportController extends AbstractConsoleController
 {
     public function __construct(DataFixtureManager $dataFixtureManager)
     {
@@ -20,10 +17,6 @@ class ImportController extends AbstractActionController
 
     public function importAction()
     {
-        if (! $this->getRequest() instanceof ConsoleRequest) {
-            throw new RuntimeException('You can only use this action from a console.');
-        }
-
         if ($this->params()->fromRoute('append')) {
             throw new RuntimeException('--append is now the default action');
         }

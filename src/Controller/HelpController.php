@@ -2,32 +2,12 @@
 
 namespace ZF\Doctrine\DataFixture\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\DataFixtures\Loader;
-use Zend\Console\Adapter\Posix;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Console\Adapter\AdapterInterface as Console;
-use Zend\Console\ColorInterface as Color;
-use RuntimeException;
+use Zend\Mvc\Console\Controller\AbstractConsoleController;
 
-class HelpController extends AbstractActionController
+class HelpController extends AbstractConsoleController
 {
-    protected $config;
-    protected $console;
-
-    public function __construct(Posix $console)
-    {
-        $this->console = $console;
-    }
-
     public function helpAction()
     {
-        if (! $this->getRequest() instanceof ConsoleRequest) {
-            throw new RuntimeException('You can only use this action from a console.');
-        }
         $help = <<<EOF
 Usage:
     data-fixture:import group_name
@@ -44,6 +24,6 @@ Options:
 
 EOF;
 
-        $this->console->write($help);
+        $this->getConsole()->write($help);
     }
 }

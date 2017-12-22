@@ -5,7 +5,6 @@ return array(
         'Zend\\Cache',
         'Zend\\Form',
         'Zend\\I18n',
-        'Zend\\Db',
         'Zend\\Filter',
         'Zend\\Hydrator',
         'Zend\\InputFilter',

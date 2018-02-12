@@ -50,7 +50,7 @@ class Module implements
     /**
      * @inheritdoc
      */
-    public function getAutoloaderConfig()
+    public function getAutoloaderConfig(): array
     {
         return [
             StandardAutoloader::class => [

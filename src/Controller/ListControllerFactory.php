@@ -18,7 +18,7 @@ class ListControllerFactory implements FactoryInterface
         ContainerInterface $container,
         $requestedName,
         array $options = null
-    ) {
+    ): ListController {
         $dataFixtureManager = null;
 
         $request = $container->get('Request');

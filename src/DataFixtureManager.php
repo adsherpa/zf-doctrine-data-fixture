@@ -1,52 +1,85 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZF\Doctrine\DataFixture;
 
-use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\ServiceManager as ZendServiceManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\ServiceManager;
 
-class DataFixtureManager extends ZendServiceManager implements
-    ObjectManagerAwareInterface
+class DataFixtureManager extends ServiceManager implements ObjectManagerAwareInterface
 {
     use ProvidesObjectManager;
 
-    protected $serviceLocator;
+    /**
+     * @var string
+     */
     protected $objectManagerAlias;
 
-    public function getAll()
+    /**
+     * @var ContainerInterface
+     */
+    protected $serviceLocator;
+
+    /**
+     * Get all data fixtures
+     *
+     * @return array
+     */
+    public function getAll(): array
     {
         $fixtures = [];
 
-        foreach ((array) $this->factories as $name => $squishedname) {
+        foreach ((array)$this->factories as $name => $squishedName) {
             $fixtures[] = $this->get($name);
         }
 
         return $fixtures;
     }
 
-    public function setObjectManagerAlias($alias)
-    {
-        $this->objectManagerAlias = $alias;
-
-        return $this;
-    }
-
-    public function getObjectManagerAlias()
+    /**
+     * Get the object manager alias
+     *
+     * @return string
+     */
+    public function getObjectManagerAlias(): string
     {
         return $this->objectManagerAlias;
     }
 
-    public function getServiceLocator()
+    /**
+     * Set the object manager alias
+     *
+     * @param string $alias
+     *
+     * @return void
+     */
+    public function setObjectManagerAlias(string $alias): void
+    {
+        $this->objectManagerAlias = $alias;
+    }
+
+    /**
+     * Get the service locator
+     *
+     * @return ContainerInterface
+     */
+    public function getServiceLocator(): ContainerInterface
     {
         return $this->serviceLocator;
     }
 
-    public function setServiceLocator(ContainerInterface $serviceLocator)
+    /**
+     * Set the service locator
+     *
+     * @param ContainerInterface $serviceLocator
+     *
+     * @return void
+     */
+    public function setServiceLocator(ContainerInterface $serviceLocator): void
     {
         $this->serviceLocator = $serviceLocator;
-
-        return $this;
     }
 }

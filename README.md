@@ -114,13 +114,13 @@ to the service manager then load the fixtures into the `Loader` manually.
 ```php
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\DataFixtures\Loader;
+use ZF\Doctrine\DataFixture\Loader;
 
 // Run audit fixtures
 $dataFixtureManager = $application->getServiceManager()
     ->build('ZF\Doctrine\DataFixture\DataFixtureManager', ['group' => 'zf-doctrine-audit']);
 
-$loader = new Loader();
+$loader = new Loader($dataFixtureManager);
 $purger = new ORMPurger();
 $executor = new ORMExecutor($auditEntityManager, $purger);
 

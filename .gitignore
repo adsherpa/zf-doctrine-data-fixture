@@ -1,6 +1,5 @@
 *.DS_Store
-vendor
-composer.lock
-composer.phar
-test/coverage
-test/build
+/.idea
+/vendor
+/composer.lock
+/test/build

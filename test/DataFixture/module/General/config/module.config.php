@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Db;
 
-return array(
-    'service_manager' => array(
-        'invokables' => array(
-            'General\Listener\EventCatcher' => 'General\Listener\EventCatcher',
-        ),
-    ),
-);
+use General\Listener\EventCatcher;
+
+return [
+    'service_manager' => [
+        'invokables' => [
+            EventCatcher::class,
+        ],
+    ],
+];

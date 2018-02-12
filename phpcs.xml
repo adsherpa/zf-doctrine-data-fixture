@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="IseStandard">
-    <description>Internalsystemerror Coding Standards</description>
+<ruleset name="ZFStandard">
+    <description>PSR2 Coding Standard</description>
     <file>src</file>
     <file>test</file>
 

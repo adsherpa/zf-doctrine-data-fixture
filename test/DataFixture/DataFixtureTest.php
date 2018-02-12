@@ -59,10 +59,10 @@ class DataFixtureTest extends AbstractConsoleControllerTestCase
     public function testBuildStandardDataFixtureManager()
     {
         $dataFixtureManager = $this->getApplication()->getServiceManager()
-                                   ->build(
-                                       DataFixtureManager::class,
-                                       ['group' => 'test-standard']
-                                   );
+                                ->build(
+                                    DataFixtureManager::class,
+                                    ['group' => 'test-standard']
+                                );
 
         $loader = new Loader($dataFixtureManager);
         $purger = new ORMPurger;
@@ -86,10 +86,10 @@ class DataFixtureTest extends AbstractConsoleControllerTestCase
     public function testBuildDependentDataFixtureManager()
     {
         $dataFixtureManager = $this->getApplication()->getServiceManager()
-                                   ->build(
-                                       DataFixtureManager::class,
-                                       ['group' => 'test-dependency']
-                                   );
+                                ->build(
+                                    DataFixtureManager::class,
+                                    ['group' => 'test-dependency']
+                                );
 
         $loader = new Loader($dataFixtureManager);
         $purger = new ORMPurger;

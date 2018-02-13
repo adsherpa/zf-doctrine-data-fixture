@@ -1,17 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZFTest\Doctrine\DataFixture;
 
-use Doctrine\ORM\Tools\SchemaTool;
-use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\DataFixtures\Loader;
 use DateTime;
 use Db\Entity;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Loader as DoctrineLoader;
+use Doctrine\ORM\Tools\SchemaTool;
+use Psr\Container\ContainerExceptionInterface;
+use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use ZF\Doctrine\DataFixture\DataFixtureManager;
+use ZF\Doctrine\DataFixture\Loader;
 
 class DataFixtureTest extends AbstractConsoleControllerTestCase
 {
+
+    /**
+     * @inheritdoc
+     */
     public function setUp()
     {
         $this->setApplicationConfig(
@@ -20,10 +29,14 @@ class DataFixtureTest extends AbstractConsoleControllerTestCase
         parent::setUp();
 
         $serviceManager = $this->getApplication()->getServiceManager();
-        $objectManager = $serviceManager->get('doctrine.entitymanager.orm_default');
+        $objectManager  = $serviceManager->get(
+            'doctrine.entitymanager.orm_default'
+        );
 
         $tool = new SchemaTool($objectManager);
-        $res = $tool->createSchema($objectManager->getMetadataFactory()->getAllMetadata());
+        $tool->createSchema(
+            $objectManager->getMetadataFactory()->getAllMetadata()
+        );
 
         $artist1 = new Entity\Artist;
         $artist1->setName('ABBA');
@@ -33,26 +46,90 @@ class DataFixtureTest extends AbstractConsoleControllerTestCase
         $objectManager->flush();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testField()
     {
-        $this->dispatch('data-fixture:import test');
+        $this->dispatch('data-fixture:import test-standard');
     }
 
-    public function testBuildDataFixtureManager()
+    /**
+     * @throws ContainerExceptionInterface
+     */
+    public function testBuildDoctrineDataFixtureManager()
     {
-        $serviceManager = $this->getApplication()->getServiceManager();
-        $objectManager = $serviceManager->get('doctrine.entitymanager.orm_default');
         $dataFixtureManager = $this->getApplication()->getServiceManager()
-            ->build('ZF\Doctrine\DataFixture\DataFixtureManager', ['group' => 'test2']);
-        
-        $loader = new Loader();
-        $purger = new ORMPurger();
+                                   ->build(
+                                       DataFixtureManager::class,
+                                       ['group' => 'test-standard']
+                                   );
+
+        $loader = new DoctrineLoader;
+        $purger = new ORMPurger;
 
         foreach ($dataFixtureManager->getAll() as $fixture) {
             $loader->addFixture($fixture);
         }
 
-        $executor = new ORMExecutor($dataFixtureManager->getObjectManager(), $purger);
+        $executor = new ORMExecutor(
+            $dataFixtureManager->getObjectManager(),
+            $purger
+        );
+        $executor->execute($loader->getFixtures(), true);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     */
+    public function testBuildStandardDataFixtureManager()
+    {
+        $dataFixtureManager = $this->getApplication()->getServiceManager()
+                                ->build(
+                                    DataFixtureManager::class,
+                                    ['group' => 'test-standard']
+                                );
+
+        $loader = new Loader($dataFixtureManager);
+        $purger = new ORMPurger;
+
+        foreach ($dataFixtureManager->getAll() as $fixture) {
+            $loader->addFixture($fixture);
+        }
+
+        $executor = new ORMExecutor(
+            $dataFixtureManager->getObjectManager(),
+            $purger
+        );
+        $executor->execute($loader->getFixtures(), true);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     */
+    public function testBuildDependentDataFixtureManager()
+    {
+        $dataFixtureManager = $this->getApplication()->getServiceManager()
+                                ->build(
+                                    DataFixtureManager::class,
+                                    ['group' => 'test-dependency']
+                                );
+
+        $loader = new Loader($dataFixtureManager);
+        $purger = new ORMPurger;
+
+        foreach ($dataFixtureManager->getAll() as $fixture) {
+            $loader->addFixture($fixture);
+        }
+
+        $executor = new ORMExecutor(
+            $dataFixtureManager->getObjectManager(),
+            $purger
+        );
         $executor->execute($loader->getFixtures(), true);
 
         $this->assertTrue(true);

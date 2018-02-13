@@ -1,28 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZF\Doctrine\DataFixture\Controller;
 
-use Zend\Mvc\Console\Controller\AbstractConsoleController;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Zend\Mvc\Console\Controller\AbstractConsoleController;
 use ZF\Doctrine\DataFixture\DataFixtureManager;
-use Doctrine\Common\DataFixtures\Loader;
+use ZF\Doctrine\DataFixture\Loader;
 
 class ImportController extends AbstractConsoleController
 {
+    /**
+     * @var DataFixtureManager
+     */
+    protected $dataFixtureManager;
+
+    /**
+     * Constructor.
+     *
+     * @param DataFixtureManager $dataFixtureManager
+     */
     public function __construct(DataFixtureManager $dataFixtureManager)
     {
         $this->dataFixtureManager = $dataFixtureManager;
     }
 
-    public function importAction()
+    /**
+     * Runs the data-fixture import
+     *
+     * @return void
+     */
+    public function importAction(): void
     {
         if ($this->params()->fromRoute('append')) {
-            throw new RuntimeException('--append is now the default action');
+            throw new \RuntimeException('--append is now the default action');
         }
 
-        $loader = new Loader();
-        $purger = new ORMPurger();
+        $loader = new Loader($this->dataFixtureManager);
+        $purger = new ORMPurger;
 
         foreach ($this->dataFixtureManager->getAll() as $fixture) {
             $loader->addFixture($fixture);
@@ -32,10 +49,13 @@ class ImportController extends AbstractConsoleController
             $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         }
 
-        $executor = new ORMExecutor($this->dataFixtureManager->getObjectManager(), $purger);
+        $executor = new ORMExecutor(
+            $this->dataFixtureManager->getObjectManager(),
+            $purger
+        );
         $executor->execute(
             $loader->getFixtures(),
-            (bool) ! $this->params()->fromRoute('do-not-append')
+            (bool)! $this->params()->fromRoute('do-not-append')
         );
     }
 }

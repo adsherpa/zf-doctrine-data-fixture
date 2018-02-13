@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZF\Doctrine\DataFixture\Controller;
 
 use Zend\Mvc\Console\Controller\AbstractConsoleController;
 
 class HelpController extends AbstractConsoleController
 {
-    public function helpAction()
+    /**
+     * Outputs this module's usage
+     *
+     * @return void
+     */
+    public function helpAction(): void
     {
         $help = <<<EOF
 Usage:

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZFTest\Doctrine\DataFixture;
 
-use Zend\Loader\AutoloaderFactory;
 use RuntimeException;
+use Zend\Loader\AutoloaderFactory;
 
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
@@ -33,32 +35,40 @@ class Bootstrap
             return;
         }
 
-        $zf2Path = getenv('ZF2_PATH') ?: (defined('ZF2_PATH') ? ZF2_PATH : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath . '/ZF2/library' : false));
+        $zf2Path = getenv('ZF2_PATH')
+            ?: (defined('ZF2_PATH')
+                ? ZF2_PATH
+                : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath
+                                                          . '/ZF2/library'
+                    : false));
 
         if (!$zf2Path) {
-            throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
+            throw new RuntimeException(
+                'Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.'
+            );
         }
 
         if (isset($loader)) {
             $loader->add('Zend', $zf2Path . '/Zend');
         } else {
             include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-            AutoloaderFactory::factory(array(
-                'Zend\Loader\StandardAutoloader' => array(
+            AutoloaderFactory::factory([
+                'Zend\Loader\StandardAutoloader' => [
                     'autoregister_zf' => true,
-                    'namespaces' => array(
+                    'namespaces'      => [
                         'ZFTest\Doctrine\DataFixture' => __DIR__ . '/../src',
-                        __NAMESPACE__ => __DIR__,
-                        'Test' => __DIR__ . '/../vendor/Test/',
-                    ),
-                ),
-            ));
+                        __NAMESPACE__                 => __DIR__,
+                        'Test'                        => __DIR__
+                                                         . '/../vendor/Test/',
+                    ],
+                ],
+            ]);
         }
     }
 
     protected static function findParentPath($path)
     {
-        $dir = __DIR__;
+        $dir         = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);

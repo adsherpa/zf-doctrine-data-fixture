@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Db\Entity;
 
 class Album
 {
     protected $id;
+    protected $name;
+    protected $createdAt;
+    protected $artist;
 
     public function getId()
     {
         return $this->id;
     }
-
-    protected $name;
 
     public function getName()
     {
@@ -25,8 +28,6 @@ class Album
         return $this;
     }
 
-    protected $createdAt;
-
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -38,8 +39,6 @@ class Album
 
         return $this;
     }
-
-    protected $artist;
 
     public function getArtist()
     {

@@ -1,27 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Db\Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Artist
 {
+    protected $id;
+    protected $name;
+    protected $createdAt;
+    protected $album;
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->album = new ArrayCollection();
+        $this->album = new ArrayCollection;
     }
-
-    protected $id;
 
     public function getId()
     {
         return $this->id;
     }
-
-    protected $name;
 
     public function getName()
     {
@@ -35,8 +38,6 @@ class Artist
         return $this;
     }
 
-    protected $createdAt;
-
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -49,8 +50,6 @@ class Artist
         return $this;
     }
 
-    protected $album;
-
     public function getAlbum()
     {
         return $this->album;
@@ -60,6 +59,7 @@ class Artist
      * Add album
      *
      * @param \Db\Entity\Album $album
+     *
      * @return Artist
      */
     public function addAlbum($album)

@@ -1,44 +1,73 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZF\Doctrine\DataFixture;
 
-use RuntimeException;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Config;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
-class DataFixtureManagerFactory
+class DataFixtureManagerFactory implements FactoryInterface
 {
+
+    /**
+     * @inheritdoc
+     */
     public function __invoke(
         ContainerInterface $container,
         $requestedName,
         array $options = null
-    ) {
-        $config = $container->get('Config');
-        $request = $container->get('Request');
+    ): DataFixtureManager {
 
-        if (isset($options['group'])) {
-            $fixtureGroup = $options['group'];
-        } else {
-            $fixtureGroup = $request->params()->get(1);
-        }
-
+        // Load the fixture group
+        $config       = $container->get('config');
+        $fixtureGroup = $this->getFixtureGroup($container, $options);
         if (! isset($config['doctrine']['fixture'][$fixtureGroup])) {
-            throw new RuntimeException('Fixture group not found: ' . $fixtureGroup);
+            throw new \RuntimeException(sprintf(
+                'Fixture group not found: %s',
+                $fixtureGroup
+            ));
         }
 
-        if (! isset($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])) {
-            throw new RuntimeException('Object manager not specified for fixture group ' . $fixtureGroup);
+        // Check for object manager
+        $groupConfig = $config['doctrine']['fixture'][$fixtureGroup];
+        if (! isset($groupConfig['object_manager'])) {
+            throw new \RuntimeException(sprintf(
+                'Object manager not specified for fixture group %s',
+                $fixtureGroup
+            ));
         }
 
-        $objectManager = $container->get($config['doctrine']['fixture'][$fixtureGroup]['object_manager']);
-
-        $instance = new DataFixtureManager((array) $config['doctrine']['fixture'][$fixtureGroup]);
-        $instance
-            ->setServiceLocator($container)
-            ->setObjectManagerAlias($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])
-            ->setObjectManager($objectManager)
-            ;
+        // Load instance
+        $objectManagerAlias = (string)$groupConfig['object_manager'];
+        $instance           = new DataFixtureManager((array)$groupConfig);
+        $instance->setServiceLocator($container);
+        $instance->setObjectManagerAlias($objectManagerAlias);
+        $instance->setObjectManager($container->get($objectManagerAlias));
 
         return $instance;
+    }
+
+    /**
+     * Get the fixture group name
+     *
+     * @param ContainerInterface $container
+     * @param array|null         $options
+     *
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getFixtureGroup(
+        ContainerInterface $container,
+        array $options = null
+    ): string {
+        if ($options && isset($options['group']) && $options['group']) {
+            return (string)$options['group'];
+        }
+
+        return (string)$container->get('Request')->params()->get(1);
     }
 }

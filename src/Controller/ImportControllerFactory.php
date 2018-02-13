@@ -19,9 +19,8 @@ class ImportControllerFactory implements FactoryInterface
         $requestedName,
         array $options = null
     ): ImportController {
-        $dataFixtureManager
-                  = $container->get(DataFixtureManager::class);
-        $instance = new ImportController($dataFixtureManager);
+        $dataFixtureManager = $container->get(DataFixtureManager::class);
+        $instance           = new ImportController($dataFixtureManager);
 
         return $instance;
     }

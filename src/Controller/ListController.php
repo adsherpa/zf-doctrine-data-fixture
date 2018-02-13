@@ -56,14 +56,14 @@ class ListController extends AbstractConsoleController
 
         $this->getConsole()->write('Group: ', Color::YELLOW);
         $this->getConsole()->write(
-            $this->params()
-                 ->fromRoute('fixture-group') . "\n",
+            $this->params()->fromRoute('fixture-group') . "\n",
             Color::GREEN
         );
         $this->getConsole()->write('Object Manager: ', Color::YELLOW);
-        $this->getConsole()
-             ->write($this->dataFixtureManager->getObjectManagerAlias()
-                     . "\n", Color::GREEN);
+        $this->getConsole()->write(
+            $this->dataFixtureManager->getObjectManagerAlias() . "\n",
+            Color::GREEN
+        );
 
         foreach ($this->dataFixtureManager->getAll() as $fixture) {
             $this->getConsole()->write(

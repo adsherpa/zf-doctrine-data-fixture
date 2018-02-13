@@ -32,7 +32,8 @@ class DataFixtureManagerFactory implements FactoryInterface
         }
 
         // Check for object manager
-        if (! isset($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])) {
+        $groupConfig = $config['doctrine']['fixture'][$fixtureGroup];
+        if (! isset($groupConfig['object_manager'])) {
             throw new \RuntimeException(sprintf(
                 'Object manager not specified for fixture group %s',
                 $fixtureGroup
@@ -40,11 +41,8 @@ class DataFixtureManagerFactory implements FactoryInterface
         }
 
         // Load instance
-        $objectManagerAlias
-                  = (string)$config['doctrine']['fixture'][$fixtureGroup]['object_manager'];
-        $instance = new DataFixtureManager(
-            (array)$config['doctrine']['fixture'][$fixtureGroup]
-        );
+        $objectManagerAlias = (string)$groupConfig['object_manager'];
+        $instance           = new DataFixtureManager((array)$groupConfig);
         $instance->setServiceLocator($container);
         $instance->setObjectManagerAlias($objectManagerAlias);
         $instance->setObjectManager($container->get($objectManagerAlias));

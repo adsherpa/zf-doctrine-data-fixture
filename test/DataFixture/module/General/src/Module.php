@@ -38,6 +38,6 @@ class Module implements ApigilityProviderInterface, BootstrapListenerInterface
         $sharedEventManager = $eventManager->getSharedManager();
 
         $eventCatcher = $serviceManager->get(EventCatcher::class);
-        $sharedEventManager->attachAggregate($eventCatcher);
+        $eventCatcher->attachShared($sharedEventManager);
     }
 }

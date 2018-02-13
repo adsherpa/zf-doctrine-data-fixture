@@ -15,8 +15,7 @@ class HelpController extends AbstractConsoleController
      */
     public function helpAction(): void
     {
-        $help
-            = <<<EOF
+        $help = <<<EOF
 Usage:
     data-fixture:import group_name
 

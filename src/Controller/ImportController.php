@@ -55,7 +55,7 @@ class ImportController extends AbstractConsoleController
         );
         $executor->execute(
             $loader->getFixtures(),
-            (bool)!$this->params()->fromRoute('do-not-append')
+            (bool)! $this->params()->fromRoute('do-not-append')
         );
     }
 }

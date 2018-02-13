@@ -44,7 +44,7 @@ class ListController extends AbstractConsoleController
      */
     public function listAction(): void
     {
-        if (!$this->dataFixtureManager) {
+        if (! $this->dataFixtureManager) {
             $this->getConsole()->write("All Fixture Groups\n", Color::RED);
 
             foreach ($this->config as $group => $smConfig) {

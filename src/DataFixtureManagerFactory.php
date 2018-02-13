@@ -24,7 +24,7 @@ class DataFixtureManagerFactory implements FactoryInterface
         // Load the fixture group
         $config       = $container->get('config');
         $fixtureGroup = $this->getFixtureGroup($container, $options);
-        if (!isset($config['doctrine']['fixture'][$fixtureGroup])) {
+        if (! isset($config['doctrine']['fixture'][$fixtureGroup])) {
             throw new \RuntimeException(sprintf(
                 'Fixture group not found: %s',
                 $fixtureGroup
@@ -32,7 +32,7 @@ class DataFixtureManagerFactory implements FactoryInterface
         }
 
         // Check for object manager
-        if (!isset($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])) {
+        if (! isset($config['doctrine']['fixture'][$fixtureGroup]['object_manager'])) {
             throw new \RuntimeException(sprintf(
                 'Object manager not specified for fixture group %s',
                 $fixtureGroup

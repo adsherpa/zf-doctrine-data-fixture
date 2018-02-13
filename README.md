@@ -145,7 +145,6 @@ Important Notes
 * You can only run one group at a time from the command line.  If you need to run more create a script to run them in sequence.
 * The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManager()`.
 * You cannot use abstract factories.  Each fixture must be individually configured.
-* Do not use constructor (dependency) injection.  The Doctrine fixture `Loader` creates fixtures even if they are already loaded in the fixture manager so any fixtures created via factory cannot use constructor injection.
 
 History
 -------

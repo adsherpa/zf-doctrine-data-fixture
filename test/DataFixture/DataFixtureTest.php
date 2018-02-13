@@ -8,6 +8,7 @@ use DateTime;
 use Db\Entity;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Loader as DoctrineLoader;
 use Doctrine\ORM\Tools\SchemaTool;
 use Psr\Container\ContainerExceptionInterface;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
@@ -51,6 +52,33 @@ class DataFixtureTest extends AbstractConsoleControllerTestCase
     public function testField()
     {
         $this->dispatch('data-fixture:import test-standard');
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     */
+    public function testBuildDoctrineDataFixtureManager()
+    {
+        $dataFixtureManager = $this->getApplication()->getServiceManager()
+                                   ->build(
+                                       DataFixtureManager::class,
+                                       ['group' => 'test-standard']
+                                   );
+
+        $loader = new DoctrineLoader;
+        $purger = new ORMPurger;
+
+        foreach ($dataFixtureManager->getAll() as $fixture) {
+            $loader->addFixture($fixture);
+        }
+
+        $executor = new ORMExecutor(
+            $dataFixtureManager->getObjectManager(),
+            $purger
+        );
+        $executor->execute($loader->getFixtures(), true);
+
+        $this->assertTrue(true);
     }
 
     /**

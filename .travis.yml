@@ -5,7 +5,6 @@ matrix:
   include:
     - php: 7.1
       env:
-        EXECUTE_CS_CHECK=true
         EXECUTE_COVERAGE=true
     - php: 7.2
     - php: nightly
@@ -21,5 +20,7 @@ install:
 
 script:
   - mkdir -p build/logs
-  - composer ci-check
-  - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/phpcs ; fi
+  - ./vendor/bin/lint /src
+  - ./vendor/bin/phpcs
+  - ./vendor/bin/phpunit
+  - ./vendor/bin/phpstan analyze -c phpstan.neon --level=7 src/

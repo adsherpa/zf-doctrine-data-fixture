@@ -20,8 +20,10 @@ class Bootstrap
 
     /**
      * Initialise the application
+     *
+     * @return void
      */
-    public static function init()
+    public static function init(): void
     {
         static::initAutoloader();
     }
@@ -31,7 +33,7 @@ class Bootstrap
      *
      * @return void
      */
-    protected static function initAutoloader()
+    protected static function initAutoloader(): void
     {
         $vendorPath   = static::findParentPath('vendor');
         $composerPath = $vendorPath . '/autoload.php';
@@ -60,7 +62,7 @@ class Bootstrap
      *
      * @return string|null
      */
-    protected static function findParentPath($path)
+    protected static function findParentPath($path): ?string
     {
         $dir         = __DIR__;
         $previousDir = '.';

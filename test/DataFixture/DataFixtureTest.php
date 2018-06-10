@@ -40,7 +40,7 @@ class DataFixtureTest extends TestCase
      * @inheritdoc
      * @throws \Exception
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->loadServiceManager();
         $this->loadDummyData();
@@ -49,9 +49,9 @@ class DataFixtureTest extends TestCase
     /**
      * Data provider for the valid commands test
      *
-     * @return array
+     * @return array<string[]>
      */
-    public function dataProviderForTestValidCommands()
+    public function dataProviderForTestValidCommands(): array
     {
         return [
             [
@@ -120,7 +120,7 @@ class DataFixtureTest extends TestCase
      * @return void
      * @throws ContainerExceptionInterface
      */
-    public function testCanBuildStandardDataFixtureManager()
+    public function testCanBuildStandardDataFixtureManager(): void
     {
         $manager = $this->getDataFixtureManager('test-standard');
         $this->configureDataFixtureManager($manager, new Loader($manager));
@@ -133,7 +133,7 @@ class DataFixtureTest extends TestCase
      * @return void
      * @throws ContainerExceptionInterface
      */
-    public function testBuildDependentDataFixture()
+    public function testBuildDependentDataFixture(): void
     {
         $manager = $this->getDataFixtureManager('test-dependency');
         $this->configureDataFixtureManager($manager, new Loader($manager));

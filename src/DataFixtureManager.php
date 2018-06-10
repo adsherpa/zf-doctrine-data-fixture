@@ -32,7 +32,7 @@ class DataFixtureManager extends AbstractPluginManager implements ObjectManagerA
     {
         $fixtures = [];
 
-        foreach ((array)$this->factories as $name => $squishedName) {
+        foreach ($this->factories as $name => $squishedName) {
             $fixtures[] = $this->get($name);
         }
 

@@ -62,7 +62,7 @@ class ImportController extends AbstractConsoleController
         $executor = new ORMExecutor($objectManager, $purger);
         $executor->execute(
             $loader->getFixtures(),
-            (bool)! $this->params()->fromRoute('do-not-append')
+            ! $this->params()->fromRoute('do-not-append')
         );
     }
 }

@@ -27,12 +27,12 @@ class ListController extends AbstractConsoleController
      *
      * @param array                   $config
      * @param ConsoleAdapter          $console
-     * @param DataFixtureManager|null $dataFixtureManager
+     * @param DataFixtureManager      $dataFixtureManager
      */
     public function __construct(
         array $config,
         ConsoleAdapter $console,
-        DataFixtureManager $dataFixtureManager = null
+        DataFixtureManager $dataFixtureManager
     ) {
         $this->config = $config;
         $this->setConsole($console);

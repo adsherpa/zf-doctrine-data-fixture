@@ -5,8 +5,9 @@ matrix:
   include:
     - php: 7.1
       env:
-        EXECUTE_CS_CHECK=true
         EXECUTE_COVERAGE=true
+    - php: 7.2
+    - php: nightly
   allow_failures:
     - php: nightly
 
@@ -15,9 +16,10 @@ before_install:
   - composer self-update
 
 install:
-  - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source --dev
+  - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source
 
 script:
   - mkdir -p build/logs
+  - ./vendor/bin/phpcs
   - ./vendor/bin/phpunit
-  - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/phpcs --standard=PSR2 --ignore=test/Bootstrap.php src test; fi
+  - ./vendor/bin/phpstan analyze -c phpstan.neon --level=7 src/

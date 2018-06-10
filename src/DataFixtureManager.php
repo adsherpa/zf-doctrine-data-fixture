@@ -1,52 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZF\Doctrine\DataFixture;
 
-use Zend\ServiceManager\ServiceManager as ZendServiceManager;
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
-use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\AbstractPluginManager;
 
-class DataFixtureManager extends ZendServiceManager implements
-    ObjectManagerAwareInterface
+class DataFixtureManager extends AbstractPluginManager implements ObjectManagerAwareInterface
 {
     use ProvidesObjectManager;
 
-    protected $serviceLocator;
+    /**
+     * @inheritdoc
+     */
+    protected $instanceOf = FixtureInterface::class;
+
+    /**
+     * @var string
+     */
     protected $objectManagerAlias;
 
-    public function getAll()
+    /**
+     * Get all data fixtures
+     *
+     * @return array
+     */
+    public function getAll(): array
     {
         $fixtures = [];
 
-        foreach ((array) $this->factories as $name => $squishedname) {
+        foreach ($this->factories as $name => $squishedName) {
             $fixtures[] = $this->get($name);
         }
 
         return $fixtures;
     }
 
-    public function setObjectManagerAlias($alias)
-    {
-        $this->objectManagerAlias = $alias;
-
-        return $this;
-    }
-
-    public function getObjectManagerAlias()
+    /**
+     * Get the object manager alias
+     *
+     * @return string
+     */
+    public function getObjectManagerAlias(): string
     {
         return $this->objectManagerAlias;
     }
 
-    public function getServiceLocator()
+    /**
+     * Set the object manager alias
+     *
+     * @param string $alias
+     *
+     * @return void
+     */
+    public function setObjectManagerAlias(string $alias): void
     {
-        return $this->serviceLocator;
-    }
-
-    public function setServiceLocator(ContainerInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
+        $this->objectManagerAlias = $alias;
     }
 }

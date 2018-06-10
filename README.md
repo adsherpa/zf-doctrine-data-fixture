@@ -2,6 +2,7 @@ ZF Doctrine Data Fixture
 ========================
 
 [![Build status](https://api.travis-ci.org/API-Skeletons/zf-doctrine-data-fixture.svg)](http://travis-ci.org/API-Skeletons/zf-doctrine-data-fixture)
+[![Gitter](https://badges.gitter.im/api-skeletons/open-source.svg)](https://gitter.im/api-skeletons/open-source)
 [![Total Downloads](https://poser.pugx.org/API-Skeletons/zf-doctrine-data-fixture/downloads)](https://packagist.org/packages/API-Skeletons/zf-doctrine-data-fixture)
 
 
@@ -38,6 +39,11 @@ Add this module to your application's configuration:
    'ZF\Doctrine\DataFixture',
 ],
 ```
+
+> ### zf-component-installer
+>
+> If you use [zf-component-installer](https://github.com/zendframework/zf-component-installer),
+> that plugin will install zf-doctrine-data-fixture as a module for you.
 
 
 Configuration
@@ -109,13 +115,13 @@ to the service manager then load the fixtures into the `Loader` manually.
 ```php
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\DataFixtures\Loader;
+use ZF\Doctrine\DataFixture\Loader;
 
 // Run audit fixtures
 $dataFixtureManager = $application->getServiceManager()
     ->build('ZF\Doctrine\DataFixture\DataFixtureManager', ['group' => 'zf-doctrine-audit']);
 
-$loader = new Loader();
+$loader = new Loader($dataFixtureManager);
 $purger = new ORMPurger();
 $executor = new ORMExecutor($auditEntityManager, $purger);
 
@@ -140,7 +146,6 @@ Important Notes
 * You can only run one group at a time from the command line.  If you need to run more create a script to run them in sequence.
 * The ServiceManager is injected into each DataFixtureManager at getServiceLocator() so you can use instantiators which run from that level.  This makes the DataFixtureManager work like a plugin manager defined with `$serviceListener->addServiceManager()`.
 * You cannot use abstract factories.  Each fixture must be individually configured.
-* Do not use constructor (dependency) injection.  The Doctrine fixture `Loader` creates fixtures even if they are already loaded in the fixture manager so any fixtures created via factory cannot use constructor injection.
 
 History
 -------
@@ -148,3 +153,4 @@ History
 Version 1.0 of this module grouped groups by partial object manager alias.  This limited grouping of 3rd party fixtures and the flexibility of using ODM.
 
 This module is a near complete rewrite of [hounddog/doctrine-data-fixture-module](https://github.com/Hounddog/DoctrineDataFixtureModule).  All the patterns have changed and the code was reduced.  That module served me and the community well for a long time.
+

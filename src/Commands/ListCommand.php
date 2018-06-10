@@ -88,7 +88,7 @@ EOT
             $input->getArgument(self::ARGUMENT_GROUP)
         ));
 
-        $interface->note(sprintf(
+        $interface->text(sprintf(
             '<comment>Object Manager:</comment> <info>%s</info>',
             $manager->getObjectManagerAlias()
         ));

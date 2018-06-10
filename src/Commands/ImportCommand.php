@@ -73,7 +73,7 @@ EOT
     protected function executeCommand(InputInterface $input, OutputInterface $output): void
     {
         $groupName = $input->getArgument(self::ARGUMENT_GROUP);
-        if (!$groupName) {
+        if (! $groupName) {
             $interface = new SymfonyStyle($input, $output);
             $interface->error('No fixture group given.');
             return;

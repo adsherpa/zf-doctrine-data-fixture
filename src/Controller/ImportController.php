@@ -6,6 +6,7 @@ namespace ZF\Doctrine\DataFixture\Controller;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManagerInterface;
 use Zend\Mvc\Console\Controller\AbstractConsoleController;
 use ZF\Doctrine\DataFixture\DataFixtureManager;
 use ZF\Doctrine\DataFixture\Loader;
@@ -49,13 +50,19 @@ class ImportController extends AbstractConsoleController
             $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         }
 
-        $executor = new ORMExecutor(
-            $this->dataFixtureManager->getObjectManager(),
-            $purger
-        );
+        $objectManager = $this->dataFixtureManager->getObjectManager();
+        if (! $objectManager instanceof EntityManagerInterface) {
+            throw new \RuntimeException(sprintf(
+                'Invalid Object Manager, %s must implement %s',
+                get_class($objectManager),
+                EntityManagerInterface::class
+            ));
+        }
+
+        $executor = new ORMExecutor($objectManager, $purger);
         $executor->execute(
             $loader->getFixtures(),
-            (bool)! $this->params()->fromRoute('do-not-append')
+            ! $this->params()->fromRoute('do-not-append')
         );
     }
 }

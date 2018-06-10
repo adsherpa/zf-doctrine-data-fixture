@@ -7,6 +7,8 @@ matrix:
       env:
         EXECUTE_CS_CHECK=true
         EXECUTE_COVERAGE=true
+    - php: 7.2
+    - php: nightly
   allow_failures:
     - php: nightly
 

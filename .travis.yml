@@ -15,7 +15,7 @@ before_install:
   - composer self-update
 
 install:
-  - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source --dev
+  - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source
 
 script:
   - mkdir -p build/logs

@@ -6,94 +6,80 @@ namespace Db\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Artist
+class Artist extends AbstractEntity
 {
-    protected $id;
-    protected $name;
-    protected $createdAt;
-    protected $album;
+    /**
+     * @var ArrayCollection
+     */
+    protected $albums;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->album = new ArrayCollection;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($value)
-    {
-        $this->name = $value;
-
-        return $this;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\Datetime $value)
-    {
-        $this->createdAt = $value;
-
-        return $this;
-    }
-
-    public function getAlbum()
-    {
-        return $this->album;
+        $this->albums = new ArrayCollection;
     }
 
     /**
-     * Add album
+     * Get albums
      *
-     * @param \Db\Entity\Album $album
-     *
-     * @return Artist
+     * @return ArrayCollection
      */
-    public function addAlbum($album)
+    public function getAlbums(): ArrayCollection
     {
-        if ($album instanceof \Db\Entity\Album) {
-            $this->album[] = $album;
-        } elseif ($album instanceof ArrayCollection) {
-            foreach ($album as $a) {
-                if (! $a instanceof \Db\Entity\Album) {
-                    throw new \Exception('Invalid type in addAlbum');
-                }
-                $this->album->add($a);
-            }
+        return $this->albums;
+    }
+
+    /**
+     * Add an album
+     *
+     * @param Album $album
+     *
+     * @return void
+     */
+    public function addAlbum(Album $album): void
+    {
+        $this->albums->set($album->getId(), $album);
+    }
+
+    /**
+     * Add many albums
+     *
+     * @param ArrayCollection $albums
+     *
+     * @return void
+     */
+    public function addAlbums(ArrayCollection $albums): void
+    {
+        foreach ($albums as $album) {
+            $this->addAlbum($album);
         }
-
-        return $this;
     }
 
     /**
-     * Remove album
+     * Remove an album
      *
-     * @param \Db\Entity\Album $album
+     * @param Album $album
+     *
+     * @return void
      */
-    public function removeAlbum($album)
+    public function removeAlbum(Album $album): void
     {
-        if ($album instanceof \Db\Entity\Album) {
-            $this->album[] = $album;
-        } elseif ($album instanceof ArrayCollection) {
-            foreach ($album as $a) {
-                if (! $a instanceof \Db\Entity\Album) {
-                    throw new \Exception('Invalid type remove addAlbum');
-                }
-                $this->album->removeElement($a);
-            }
+        $this->albums->remove($album->getId());
+    }
+
+    /**
+     * Remove many albums
+     *
+     * @param ArrayCollection $albums
+     *
+     * @return void
+     */
+    public function removeAlbums(ArrayCollection $albums): void
+    {
+        foreach ($albums as $album) {
+            $this->removeAlbum($album);
         }
     }
 }

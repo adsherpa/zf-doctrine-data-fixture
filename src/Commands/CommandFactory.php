@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ZF\Doctrine\DataFixture\Controller;
+namespace ZF\Doctrine\DataFixture\Commands;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class HelpControllerFactory implements FactoryInterface
+class CommandFactory implements FactoryInterface
 {
 
     /**
@@ -17,10 +17,7 @@ class HelpControllerFactory implements FactoryInterface
         ContainerInterface $container,
         $requestedName,
         array $options = null
-    ): HelpController {
-        $instance = new HelpController;
-        $instance->setConsole($container->get('Console'));
-
-        return $instance;
+    ): AbstractCommand {
+        return new $requestedName($container);
     }
 }

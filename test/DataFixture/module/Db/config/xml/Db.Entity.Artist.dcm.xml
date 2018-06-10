@@ -8,6 +8,6 @@
         </id>
         <field name="name" type="string" nullable="true"/>
         <field name="createdAt" type="datetime" nullable="true"/>
-        <one-to-many field="album" target-entity="Db\Entity\Album" mapped-by="artist"/>
+        <one-to-many field="albums" target-entity="Db\Entity\Album" mapped-by="artist"/>
     </entity>
 </doctrine-mapping>

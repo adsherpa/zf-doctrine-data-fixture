@@ -24,7 +24,7 @@ return [
             ],
         ],
         'fixture'    => [
-            'test-standard'  => [
+            'test-standard'   => [
                 'object_manager' => 'doctrine.entitymanager.orm_default',
                 'invokables'     => [
                     StandardFixture::class,

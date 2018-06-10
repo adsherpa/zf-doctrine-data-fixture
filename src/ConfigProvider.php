@@ -15,10 +15,6 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(),
-            'controllers'  => $this->getControllerDependencyConfig(),
-            'console'      => [
-                'router' => $this->getConsoleRouterConfig(),
-            ],
         ];
     }
 
@@ -30,67 +26,14 @@ class ConfigProvider
     public function getDependencies(): array
     {
         return [
-            'factories' => [
-                DataFixtureManager::class => DataFixtureManagerFactory::class,
+            'aliases'   => [
+                'doctrine.data-fixture.import' => Commands\ImportCommand::class,
+                'doctrine.data-fixture.list'   => Commands\ListCommand::class,
             ],
-        ];
-    }
-
-    /**
-     * Get the controller dependency configuration
-     *
-     * @return array
-     */
-    public function getControllerDependencyConfig(): array
-    {
-        return [
             'factories' => [
-                Controller\HelpController::class   => Controller\HelpControllerFactory::class,
-                Controller\ImportController::class => Controller\ImportControllerFactory::class,
-                Controller\ListController::class   => Controller\ListControllerFactory::class,
-            ],
-        ];
-    }
-
-    /**
-     * Get the console router configuration
-     *
-     * @return array
-     */
-    public function getConsoleRouterConfig(): array
-    {
-        return [
-            'routes' => [
-                'zf-doctrine-data-fixture-help' => [
-                    'options' => [
-                        'route'    => 'data-fixture:help',
-                        'defaults' => [
-                            'controller' => Controller\HelpController::class,
-                            'action'     => 'help',
-                        ],
-                    ],
-                ],
-
-                'zf-doctrine-data-fixture-import' => [
-                    'options' => [
-                        'route'    => 'data-fixture:import <fixture-group>'
-                                      . ' [--append] [--do-not-append] [--purge-with-truncate]',
-                        'defaults' => [
-                            'controller' => Controller\ImportController::class,
-                            'action'     => 'import',
-                        ],
-                    ],
-                ],
-
-                'zf-doctrine-data-fixture-list' => [
-                    'options' => [
-                        'route'    => 'data-fixture:list [<fixture-group>]',
-                        'defaults' => [
-                            'controller' => Controller\ListController::class,
-                            'action'     => 'list',
-                        ],
-                    ],
-                ],
+                Commands\ImportCommand::class => Commands\CommandFactory::class,
+                Commands\ListCommand::class   => Commands\CommandFactory::class,
+                DataFixtureManager::class     => DataFixtureManagerFactory::class,
             ],
         ];
     }

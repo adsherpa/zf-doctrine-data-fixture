@@ -18,6 +18,6 @@ class DependentFixtureFactory implements FactoryInterface
         $requestedName,
         array $options = null
     ): DependentFixture {
-        return new DependentFixture(true);
+        return new DependentFixture;
     }
 }

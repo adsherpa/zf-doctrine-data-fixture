@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace ZF\Doctrine\DataFixture;
 
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
-use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\AbstractPluginManager;
 
-class DataFixtureManager extends ServiceManager implements ObjectManagerAwareInterface
+class DataFixtureManager extends AbstractPluginManager implements ObjectManagerAwareInterface
 {
     use ProvidesObjectManager;
+
+    /**
+     * @inheritdoc
+     */
+    protected $instanceOf = FixtureInterface::class;
 
     /**
      * @var string
      */
     protected $objectManagerAlias;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $serviceLocator;
 
     /**
      * Get all data fixtures
@@ -32,7 +32,7 @@ class DataFixtureManager extends ServiceManager implements ObjectManagerAwareInt
     {
         $fixtures = [];
 
-        foreach ((array)$this->factories as $name => $squishedName) {
+        foreach ($this->factories as $name => $squishedName) {
             $fixtures[] = $this->get($name);
         }
 
@@ -59,27 +59,5 @@ class DataFixtureManager extends ServiceManager implements ObjectManagerAwareInt
     public function setObjectManagerAlias(string $alias): void
     {
         $this->objectManagerAlias = $alias;
-    }
-
-    /**
-     * Get the service locator
-     *
-     * @return ContainerInterface
-     */
-    public function getServiceLocator(): ContainerInterface
-    {
-        return $this->serviceLocator;
-    }
-
-    /**
-     * Set the service locator
-     *
-     * @param ContainerInterface $serviceLocator
-     *
-     * @return void
-     */
-    public function setServiceLocator(ContainerInterface $serviceLocator): void
-    {
-        $this->serviceLocator = $serviceLocator;
     }
 }

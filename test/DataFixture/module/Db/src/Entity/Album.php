@@ -4,51 +4,38 @@ declare(strict_types=1);
 
 namespace Db\Entity;
 
-class Album
+/**
+ * Test Class Album
+ *
+ * @package Db\Entity
+ */
+class Album extends AbstractEntity
 {
-    protected $id;
-    protected $name;
-    protected $createdAt;
+
+    /**
+     * @var string
+     */
     protected $artist;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($value)
-    {
-        $this->name = $value;
-
-        return $this;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\Datetime $value)
-    {
-        $this->createdAt = $value;
-
-        return $this;
-    }
-
-    public function getArtist()
+    /**
+     * Get artist
+     *
+     * @return string
+     */
+    public function getArtist(): string
     {
         return $this->artist;
     }
 
-    public function setArtist($value)
+    /**
+     * Set artist
+     *
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setArtist(string $value): void
     {
         $this->artist = $value;
-
-        return $this;
     }
 }

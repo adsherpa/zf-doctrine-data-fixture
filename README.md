@@ -153,3 +153,4 @@ History
 Version 1.0 of this module grouped groups by partial object manager alias.  This limited grouping of 3rd party fixtures and the flexibility of using ODM.
 
 This module is a near complete rewrite of [hounddog/doctrine-data-fixture-module](https://github.com/Hounddog/DoctrineDataFixtureModule).  All the patterns have changed and the code was reduced.  That module served me and the community well for a long time.
+

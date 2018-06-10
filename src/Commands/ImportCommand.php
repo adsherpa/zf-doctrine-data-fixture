@@ -72,7 +72,7 @@ EOT
      */
     protected function executeCommand(InputInterface $input, OutputInterface $output): void
     {
-        $manager = $this->getDataFixtureManager($input);
+        $manager = $this->getDataFixtureManager($input->getArgument(self::ARGUMENT_GROUP));
         $loader  = new Loader($manager);
         $purger  = new ORMPurger;
 

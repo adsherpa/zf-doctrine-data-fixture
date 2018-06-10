@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZF\Doctrine\DataFixture\DataFixtureManager;
 use ZF\Doctrine\DataFixture\DataFixtureManagerFactory;
@@ -40,9 +41,9 @@ abstract class AbstractCommand extends Command
     {
         try {
             $this->executeCommand($input, $output);
-        } catch (\Throwable $throwable) {
+        } catch (ServiceNotCreatedException $exception) {
             $interface = new SymfonyStyle($input, $output);
-            $interface->error($throwable->getMessage());
+            $interface->error($exception->getPrevious()->getMessage());
         }
     }
 
@@ -59,14 +60,14 @@ abstract class AbstractCommand extends Command
     /**
      * Get the data fixture manager
      *
-     * @param InputInterface $input
+     * @param string $groupName
      *
      * @return DataFixtureManager
      */
-    protected function getDataFixtureManager(InputInterface $input): DataFixtureManager
+    protected function getDataFixtureManager(string $groupName): DataFixtureManager
     {
         return $this->container->build(DataFixtureManager::class, [
-            DataFixtureManagerFactory::OPTION_GROUP => $input->getArgument(self::ARGUMENT_GROUP),
+            DataFixtureManagerFactory::OPTION_GROUP => $groupName,
         ]);
     }
 }

@@ -23,7 +23,7 @@ class ListCommand extends AbstractCommand
              ->setDescription('List all fixture groups, or if specified, list all fixtures for a given group.')
              ->addArgument(
                  self::ARGUMENT_GROUP,
-                 InputOption::VALUE_OPTIONAL,
+                 InputOption::VALUE_REQUIRED,
                  'The data-fixture group to import.'
              )
              ->addUsage('%command.name% [\<group_name\>]')
@@ -41,7 +41,7 @@ EOT
     protected function executeCommand(InputInterface $input, OutputInterface $output): void
     {
         $interface = new SymfonyStyle($input, $output);
-        if (! $input->hasArgument(self::ARGUMENT_GROUP)) {
+        if (! $input->hasArgument(self::ARGUMENT_GROUP) || ! $input->getArgument(self::ARGUMENT_GROUP)) {
             $this->listAllGroups($interface);
             return;
         }
@@ -77,10 +77,15 @@ EOT
      */
     protected function listGroup(InputInterface $input, SymfonyStyle $interface): void
     {
-        $manager = $this->getDataFixtureManager($input);
+        $group = (array)$input->getArgument(self::ARGUMENT_GROUP);
+        if (count($group) !== 1) {
+            throw new \RuntimeException('Only one data fixture group can be provided.');
+        }
+
+        $manager = $this->getDataFixtureManager($group[0]);
         $interface->title(sprintf(
             '<comment>Group:</comment> <info>%s</info>',
-            $input->getOption(self::ARGUMENT_GROUP)
+            $input->getArgument(self::ARGUMENT_GROUP)
         ));
 
         $interface->note(sprintf(

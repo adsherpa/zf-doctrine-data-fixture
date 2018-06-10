@@ -72,7 +72,14 @@ EOT
      */
     protected function executeCommand(InputInterface $input, OutputInterface $output): void
     {
-        $manager = $this->getDataFixtureManager($input->getArgument(self::ARGUMENT_GROUP));
+        $groupName = $input->getArgument(self::ARGUMENT_GROUP);
+        if (!$groupName) {
+            $interface = new SymfonyStyle($input, $output);
+            $interface->error('No fixture group given.');
+            return;
+        }
+
+        $manager = $this->getDataFixtureManager($groupName);
         $loader  = new Loader($manager);
         $purger  = new ORMPurger;
 

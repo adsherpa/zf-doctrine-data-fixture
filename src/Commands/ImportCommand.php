@@ -24,25 +24,25 @@ class ImportCommand extends AbstractCommand
         $groupName = sprintf('\<%s\>', self::ARGUMENT_GROUP);
         $this->setName('data-fixture:import')
              ->setDescription('Import the data fixtures for the provided group name')
-            ->addArgument(
-                self::ARGUMENT_GROUP,
-                InputOption::VALUE_REQUIRED,
-                'The data-fixture group to import.'
-            )
-            ->addOption(
-                'purge-with-truncate',
-                null,
-                InputOption::VALUE_NONE,
-                'If specified, will purge the object manager\'s tables using truncate before running fixtures.'
-            )
-            ->addOption(
-                'do-not-append',
-                null,
-                InputOption::VALUE_NONE,
-                'Specifying this option ensures that the object manager\'s tables will be emptied. The default option '
+             ->addArgument(
+                 self::ARGUMENT_GROUP,
+                 InputOption::VALUE_REQUIRED,
+                 'The data-fixture group to import.'
+             )
+             ->addOption(
+                 'purge-with-truncate',
+                 null,
+                 InputOption::VALUE_NONE,
+                 'If specified, will purge the object manager\'s tables using truncate before running fixtures.'
+             )
+             ->addOption(
+                 'do-not-append',
+                 null,
+                 InputOption::VALUE_NONE,
+                 'Specifying this option ensures that the object manager\'s tables will be emptied. The default option '
                  . 'is to append values to the tables. NOTE: If you are re-running fixtures, this option is not '
                  . 'necessary.'
-            )
+             )
              ->addUsage('%command.name% \<group_name\> [--purge-with-truncate] [--do-not-append]')
              ->setHelp(<<<EOT
 The <info>%command.name% {$groupName}</info> command imports the data fixtures
@@ -70,7 +70,7 @@ EOT
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function executeCommand(InputInterface $input, OutputInterface $output): void
     {
         $manager = $this->getDataFixtureManager($input);
         $loader  = new Loader($manager);
@@ -87,7 +87,7 @@ EOT
         $objectManager = $manager->getObjectManager();
         if (! $objectManager instanceof EntityManagerInterface) {
             throw new \RuntimeException(sprintf(
-                'Invalid Object Manager, %s must implement %s',
+                'Invalid object manager given, %s must implement %s.',
                 get_class($objectManager),
                 EntityManagerInterface::class
             ));
@@ -95,7 +95,7 @@ EOT
 
         $executor = new ORMExecutor($objectManager, $purger);
         $executor->execute($loader->getFixtures(), ! $input->getOption('do-not-append'));
-        $io = new SymfonyStyle($input, $output);
-        $io->success('Fixtures loaded!');
+        $interface = new SymfonyStyle($input, $output);
+        $interface->success('Fixtures loaded!');
     }
 }

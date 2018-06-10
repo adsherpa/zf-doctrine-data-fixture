@@ -21,11 +21,11 @@ class ListCommand extends AbstractCommand
         $groupName = sprintf('[\<%s\>]', self::ARGUMENT_GROUP);
         $this->setName('data-fixture:list')
              ->setDescription('List all fixture groups, or if specified, list all fixtures for a given group.')
-            ->addArgument(
-                self::ARGUMENT_GROUP,
-                InputOption::VALUE_OPTIONAL,
-                'The data-fixture group to import.'
-            )
+             ->addArgument(
+                 self::ARGUMENT_GROUP,
+                 InputOption::VALUE_OPTIONAL,
+                 'The data-fixture group to import.'
+             )
              ->addUsage('%command.name% [\<group_name\>]')
              ->setHelp(<<<EOT
 The <info>%command.name% {$groupName}</info> command lists the data fixtures
@@ -38,10 +38,10 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function executeCommand(InputInterface $input, OutputInterface $output): void
     {
         $interface = new SymfonyStyle($input, $output);
-        if (!$input->hasArgument(self::ARGUMENT_GROUP)) {
+        if (! $input->hasArgument(self::ARGUMENT_GROUP)) {
             $this->listAllGroups($interface);
             return;
         }

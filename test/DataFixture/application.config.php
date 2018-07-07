@@ -21,7 +21,6 @@ $modules = array_merge($modules, [
     'Zend\Paginator',
     'Zend\Router',
     'Zend\Validator',
-    'Zend\Mvc\Console',
     'DoctrineModule',
     'DoctrineORMModule',
     'Db',

@@ -4,47 +4,29 @@ declare(strict_types=1);
 
 namespace ZF\Doctrine\DataFixture;
 
-use Zend\Console\Adapter\AdapterInterface as Console;
+use Symfony\Component\Console\Application;
+use Zend\EventManager\EventInterface;
 use Zend\Loader\StandardAutoloader;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Zend\ModuleManager\Feature\InitProviderInterface;
+use Zend\ModuleManager\ModuleManagerInterface;
+use Zend\ServiceManager\ServiceManager;
+use ZF\Doctrine\DataFixture\Commands\ImportCommand;
+use ZF\Doctrine\DataFixture\Commands\ListCommand;
 
 class Module implements
-    ConfigProviderInterface,
     AutoloaderProviderInterface,
-    ConsoleUsageProviderInterface
+    ConfigProviderInterface,
+    InitProviderInterface
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function getConsoleUsage(Console $console): array
-    {
-        return [
-            'data-fixture:help'
-            => 'Data Fixtures Help',
-            'data-fixture:list [<group>]'
-            => 'List Data Fixtures',
-            'data-fixture:import <group> [--append] [--purge-with-truncate]'
-            => 'Import Data Fixtures',
-        ];
-    }
 
     /**
      * @inheritdoc
      */
     public function getConfig(): array
     {
-        $configProvider = new ConfigProvider;
-
-        return [
-            'service_manager' => $configProvider->getDependencies(),
-            'controllers'     => $configProvider->getControllerDependencyConfig(),
-            'console'         => [
-                'router' => $configProvider->getConsoleRouterConfig(),
-            ],
-        ];
+        return ['service_manager' => (new ConfigProvider)->getDependencies(),];
     }
 
     /**
@@ -59,5 +41,42 @@ class Module implements
                 ],
             ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function init(ModuleManagerInterface $manager): void
+    {
+        $eventManager = $manager->getEventManager();
+        if (! $eventManager) {
+            throw new \RuntimeException('Unable to retrieve event manager.');
+        }
+
+        $sharedEventManager = $eventManager->getSharedManager();
+        if (! $sharedEventManager) {
+            throw new \RuntimeException('Unable to retrieve shared event manager.');
+        }
+
+        $sharedEventManager->attach(
+            'doctrine',
+            'loadCli.post',
+            function (EventInterface $event) {
+                $application = $event->getTarget();
+                if (! $application instanceof Application) {
+                    throw new \RuntimeException('Unable to retrieve application.');
+                }
+
+                $container = $event->getParam('ServiceManager');
+                if (! $container instanceof ServiceManager) {
+                    throw new \RuntimeException('Unable to retrieve service manager.');
+                }
+
+                $application->addCommands([
+                    $container->get(ImportCommand::class),
+                    $container->get(ListCommand::class),
+                ]);
+            }
+        );
     }
 }

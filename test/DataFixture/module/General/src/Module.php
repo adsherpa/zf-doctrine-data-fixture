@@ -11,12 +11,18 @@ use ZF\Apigility\Provider\ApigilityProviderInterface;
 
 class Module implements ApigilityProviderInterface, BootstrapListenerInterface
 {
-    public function getConfig()
+    /**
+     * @inheritdoc
+     */
+    public function getConfig(): array
     {
-        return include __DIR__ . '/../config/module.config.php';
+        return require __DIR__ . '/../config/module.config.php';
     }
 
-    public function getAutoloaderConfig()
+    /**
+     * @inheritdoc
+     */
+    public function getAutoloaderConfig(): array
     {
         return [
             'Zend\Loader\StandardAutoloader' => [
@@ -30,7 +36,7 @@ class Module implements ApigilityProviderInterface, BootstrapListenerInterface
     /**
      * @inheritdoc
      */
-    public function onBootstrap(EventInterface $event)
+    public function onBootstrap(EventInterface $event): void
     {
         $application        = $event->getApplication();
         $serviceManager     = $application->getServiceManager();

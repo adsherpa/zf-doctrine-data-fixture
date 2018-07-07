@@ -22,7 +22,7 @@ class FactoryFixture implements FixtureInterface
     /**
      * @inheritdoc
      */
-    public function load(ObjectManager $objectManager)
+    public function load(ObjectManager $objectManager): bool
     {
         return true;
     }

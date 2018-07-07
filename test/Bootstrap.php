@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ZFTest\Doctrine\DataFixture;
 
-use RuntimeException;
 use Zend\Loader\AutoloaderFactory;
 
 error_reporting(E_ALL | E_STRICT);
@@ -18,67 +17,92 @@ date_default_timezone_set('UTC');
  */
 class Bootstrap
 {
-    protected static $serviceManager;
 
-    public static function init()
+    /**
+     * Initialise the application
+     *
+     * @return void
+     */
+    public static function init(): void
     {
         static::initAutoloader();
     }
 
-    protected static function initAutoloader()
+    /**
+     * Initialise the autoloader
+     *
+     * @return void
+     */
+    protected static function initAutoloader(): void
     {
-        $vendorPath = static::findParentPath('vendor');
-
-        if (is_readable($vendorPath . '/autoload.php')) {
-            $loader = include $vendorPath . '/autoload.php';
-
+        $vendorPath   = static::findParentPath('vendor');
+        $composerPath = $vendorPath . '/autoload.php';
+        if (is_readable($composerPath)) {
+            require $composerPath;
             return;
         }
 
-        $zf2Path = getenv('ZF2_PATH')
-            ?: (defined('ZF2_PATH')
-                ? ZF2_PATH
-                : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath
-                                                          . '/ZF2/library'
-                    : false));
-
-        if (!$zf2Path) {
-            throw new RuntimeException(
-                'Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.'
-            );
-        }
-
-        if (isset($loader)) {
-            $loader->add('Zend', $zf2Path . '/Zend');
-        } else {
-            include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-            AutoloaderFactory::factory([
-                'Zend\Loader\StandardAutoloader' => [
-                    'autoregister_zf' => true,
-                    'namespaces'      => [
-                        'ZFTest\Doctrine\DataFixture' => __DIR__ . '/../src',
-                        __NAMESPACE__                 => __DIR__,
-                        'Test'                        => __DIR__
-                                                         . '/../vendor/Test/',
-                    ],
+        require static::getZendPath($vendorPath) . '/Zend/Loader/AutoloaderFactory.php';
+        AutoloaderFactory::factory([
+            'Zend\Loader\StandardAutoloader' => [
+                'autoregister_zf' => true,
+                'namespaces'      => [
+                    'ZFTest\Doctrine\DataFixture' => __DIR__ . '/../src',
+                    __NAMESPACE__                 => __DIR__,
+                    'Test'                        => __DIR__ . '/../vendor/Test/',
                 ],
-            ]);
-        }
+            ],
+        ]);
     }
 
-    protected static function findParentPath($path)
+    /**
+     * Find the parent path
+     *
+     * @param $path
+     *
+     * @return string|null
+     */
+    protected static function findParentPath($path): ?string
     {
         $dir         = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
             if ($previousDir === $dir) {
-                return false;
+                return null;
             }
             $previousDir = $dir;
         }
 
         return $dir . '/' . $path;
+    }
+
+    /**
+     * Get the zend framework library path
+     *
+     * @param string $vendorPath
+     *
+     * @return string
+     */
+    protected static function getZendPath(string $vendorPath): string
+    {
+        $environment = getenv('ZF2_PATH');
+        if ($environment) {
+            return $environment;
+        }
+
+        if (defined('ZF2_PATH')) {
+            return ZF2_PATH;
+        }
+
+        $libraryPath = $vendorPath . '/ZF2/library';
+        if (is_dir($libraryPath)) {
+            return $libraryPath;
+        }
+
+        throw new \RuntimeException(
+            'Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.'
+        );
     }
 }
 

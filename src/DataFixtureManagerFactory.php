@@ -64,7 +64,11 @@ class DataFixtureManagerFactory implements FactoryInterface
      */
     protected function getGroupConfig(array $config, string $fixtureGroup): array
     {
-        $groupConfig = (array)$config['doctrine']['fixture'][$fixtureGroup];
+        $groupConfig = null;
+        if (isset($config['doctrine']['fixture'][$fixtureGroup])) {
+            $groupConfig = (array)$config['doctrine']['fixture'][$fixtureGroup];
+        }
+
         if (! $groupConfig) {
             throw new \RuntimeException(sprintf(
                 'Fixture group not found: %s',

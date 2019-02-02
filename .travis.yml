@@ -7,6 +7,7 @@ matrix:
       env:
         EXECUTE_COVERAGE=true
     - php: 7.2
+    - php: 7.3
     - php: nightly
   allow_failures:
     - php: nightly

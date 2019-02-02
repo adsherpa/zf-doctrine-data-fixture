@@ -141,6 +141,17 @@ class DataFixtureTest extends TestCase
     }
 
     /**
+     * Test invalid groups are properly handled
+     *
+     * RuntimeException: Fixture group not found: invalid-group
+     */
+    public function testInvalidGroup(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $manager = $this->getDataFixtureManager('invalid-group');
+    }
+
+    /**
      * Builds a new ServiceManager instance
      *
      * @return void
